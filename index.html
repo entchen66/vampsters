@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +13,7 @@
             --accent-hover: #ff6b81;
             --completed-bg: #1e1e2a;
             --completed-text: #888;
+            --warning-color: #ffb142;
         }
 
         body {
@@ -83,7 +84,7 @@
         .progress-container {
             max-width: 800px;
             width: 100%;
-            margin: 0 auto 30px auto;
+            margin: 0 auto 15px auto; /* Abstand nach unten reduziert wegen Info-Box */
             background-color: var(--card-bg);
             padding: 15px;
             border-radius: 10px;
@@ -108,6 +109,21 @@
             height: 100%;
             width: 0%;
             transition: width 0.3s ease;
+        }
+
+        /* Info Hinweis (Work In Progress) */
+        .wip-notice {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto 30px auto;
+            background-color: rgba(255, 177, 66, 0.1);
+            border-left: 4px solid var(--warning-color);
+            padding: 12px 15px;
+            border-radius: 0 5px 5px 0;
+            color: #f1f2f6;
+            font-size: 14px;
+            line-height: 1.5;
+            box-sizing: border-box;
         }
 
         /* Regionen und Grid */
@@ -318,6 +334,11 @@
         </div>
     </div>
 
+    <!-- Neue Info-Box -->
+    <div class="wip-notice" id="wip-notice">
+        <!-- Text wird via JavaScript geladen -->
+    </div>
+
     <div class="main-content" id="tracker-container"></div>
 
     <div id="image-modal" class="modal" onclick="closeModal()">
@@ -343,7 +364,8 @@
                 collected: "Gesammelt",
                 noImage: "Kein Bild vorhanden",
                 zoom: "Bild vergrößern",
-                credits: "Informationen & Bilder stammen von"
+                credits: "Informationen & Bilder stammen von",
+                wip: "⚠️ <strong>Hinweis:</strong> Dieser Tracker ist noch in Arbeit (WIP)! Aktuell sind erst 57 von 100 Vampstern im Guide bekannt. Die Liste wird aktualisiert, sobald neue Fundorte entdeckt werden."
             },
             en: {
                 title: "🦇 Moonlight Peaks - Vampster Tracker",
@@ -351,14 +373,14 @@
                 collected: "Collected",
                 noImage: "No image available",
                 zoom: "Zoom image",
-                credits: "Information & images sourced from"
+                credits: "Information & images sourced from",
+                wip: "⚠️ <strong>Note:</strong> This tracker is a work in progress (WIP)! Currently, only 57 out of 100 Vampsters are known in the guide. The list will be updated as soon as new locations are discovered."
             }
         };
 
         // ==========================================
         // VAMPSTER DATEN MIT EINDEUTIGEN IDs
         // ==========================================
-        // Wenn du neue Fundorte hinzufügst, gib ihnen einfach eine neue, beliebige "id" (z.B. "vamp_neu_01")
         const vampstersData = {
             "Cave Of Echoes": [
                 { 
@@ -484,6 +506,7 @@
             document.getElementById('page-title').innerText = translations[lang].title;
             document.getElementById('progress-label').innerText = translations[lang].progress;
             document.getElementById('credits-label').innerText = translations[lang].credits;
+            document.getElementById('wip-notice').innerHTML = translations[lang].wip;
 
             renderTracker();
         }
@@ -520,7 +543,6 @@
             checkbox.checked = isNowChecked;
 
             if (isNowChecked) {
-                // Sichert die ID im lokalen Speicher deines Browsers
                 localStorage.setItem(`vampster_${id}`, 'true');
                 card.classList.add('completed');
                 collectedVampsters++;
@@ -558,7 +580,6 @@
                 vampsters.forEach((vampster) => {
                     totalVampsters++;
                     
-                    // Verwendet nun die feste ID aus dem JSON!
                     const uniqueId = vampster.id;
                     const isCollected = localStorage.getItem(`vampster_${uniqueId}`) === 'true';
                     
