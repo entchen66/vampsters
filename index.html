@@ -162,10 +162,11 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 15px;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, transform 0.5s ease, gap 0.5s ease;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, transform 0.5s ease, gap 0.5s ease, padding 0.5s ease;
             max-height: 2500px;
             opacity: 1;
             overflow: hidden;
+            padding-top: 10px; /* Pufferbereich, damit gehoverte Kacheln (translateY) oben nicht abgeschnitten werden */
         }
 
         .grid.collapsed {
@@ -174,6 +175,7 @@
             transform: scaleY(0.95);
             pointer-events: none;
             gap: 0px;
+            padding-top: 0px;
         }
 
         /* Einzelne Karten */
