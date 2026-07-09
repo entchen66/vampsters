@@ -510,7 +510,16 @@
             noImage: "Kein Bild vorhanden",
             zoom: "Bild vergrößern",
             credits: "Informationen & Bilder stammen von",
-            wip: "⚠️ <strong>Hinweis:</strong> Dieser Tracker ist noch in Arbeit (WIP)! Aktuell sind erst 57 von 100 Vampstern im Guide bekannt. Die Liste wird aktualisiert, sobald neue Fundorte entdeckt werden."
+            wip: "⚠️ <strong>Hinweis:</strong> Dieser Tracker ist noch in Arbeit (WIP)! Aktuell sind erst 57 von 100 Vampstern im Guide bekannt. Die Liste wird aktualisiert, sobald neue Fundorte entdeckt werden.",
+            regions: {
+                "Cave Of Echoes": "Echohöhle",
+                "Town": "Moonlight Peaks (Stadt)",
+                "Moonlit Pines": "Mondscheinwald",
+                "Misty Shores": "Nebelküste",
+                "Groovy Grove": "Deine Farm",
+                "Howling Marshes": "Heulender Sumpf",
+                "Khazan Temple": "Khazan-Tempel"
+            }
         },
         en: {
             title: "🦇 Moonlight Peaks - Vampster Tracker",
@@ -519,7 +528,16 @@
             noImage: "No image available",
             zoom: "Zoom image",
             credits: "Information & images sourced from",
-            wip: "⚠️ <strong>Note:</strong> This tracker is a work in progress (WIP)! Currently, only 57 out of 100 Vampsters are known in the guide. The list will be updated as soon as new locations are discovered."
+            wip: "⚠️ <strong>Note:</strong> This tracker is a work in progress (WIP)! Currently, only 57 out of 100 Vampsters are known in the guide. The list will be updated as soon as new locations are discovered.",
+            regions: {
+                "Cave Of Echoes": "Cave of Echoes",
+                "Town": "Moonlight Peaks (Town)",
+                "Moonlit Pines": "Moonlit Pines",
+                "Misty Shores": "Misty Shores",
+                "Groovy Grove": "Your Farm",
+                "Howling Marshes": "Howling Marshes",
+                "Khazan Temple": "Khazan Temple"
+            }
         }
     };
 
@@ -1027,7 +1045,7 @@
 
             const title = document.createElement('h2');
             title.className = 'region-title';
-            title.innerText = region;
+            title.innerText = uiStrings.regions[region] || region;
             section.appendChild(title);
 
             const grid = document.createElement('div');
@@ -1182,10 +1200,27 @@
         let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
         let cPos = { x: mouse.x, y: mouse.y, angle: 0 }; 
         let bPos = { x: mouse.x, y: mouse.y, scaleX: 1 }; 
+        let mouseOnScreen = true;
 
         const lerp = (start, end, factor) => start + (end - start) * factor;
 
         window.addEventListener('mousemove', (e) => {
+            // Ignoriere Events ganz am Bildschirmrand beim Verlassen
+            if (e.clientX < 3 || e.clientY < 3 || e.clientX > window.innerWidth - 3 || e.clientY > window.innerHeight - 3) {
+                mouseOnScreen = false;
+                return;
+            }
+            mouseOnScreen = true;
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        document.addEventListener('mouseleave', () => {
+            mouseOnScreen = false;
+        });
+
+        document.addEventListener('mouseenter', (e) => {
+            mouseOnScreen = true;
             mouse.x = e.clientX;
             mouse.y = e.clientY;
         });
@@ -1196,8 +1231,28 @@
             const oldBX = bPos.x;
             const oldBY = bPos.y;
 
-            cPos.x = lerp(cPos.x, mouse.x, 0.5);
-            cPos.y = lerp(cPos.y, mouse.y, 0.5);
+            // Ziel-Position bestimmen (Maus oder Ruheposition)
+            let targetX = mouse.x;
+            let targetY = mouse.y;
+
+            if (!mouseOnScreen) {
+                // Ruheposition: Direkt rechts neben der Fortschritts-Anzeige
+                const progressText = document.getElementById('progress-text');
+                if (progressText) {
+                    const rect = progressText.getBoundingClientRect();
+                    targetX = rect.right + 25; // Platziert den Kristall rechts neben die Zahlen
+                    targetY = rect.top + rect.height / 2;
+                } else {
+                    // Fallback (z.B. oben rechts)
+                    targetX = window.innerWidth - 80;
+                    targetY = 60;
+                }
+            }
+
+            // Weicheres Hingleiten zur Ruheposition
+            const lerpFactor = mouseOnScreen ? 0.35 : 0.05;
+            cPos.x = lerp(cPos.x, targetX, lerpFactor);
+            cPos.y = lerp(cPos.y, targetY, lerpFactor);
 
             const vx = cPos.x - oldCX;
             const vy = cPos.y - oldCY;
