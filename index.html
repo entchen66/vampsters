@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- WICHTIG FÜR MOBILE: Sperrt den Zoom der gesamten Seite und erzwingt korrekte Breite -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>Moonlight Peaks - Vampster Tracker</title>
     <style>
         :root {
@@ -25,6 +27,8 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            /* Verhindert Pull-to-Refresh auf mobilen Browsern */
+            overscroll-behavior-y: none;
         }
 
         /* Header und Sprachauswahl */
@@ -42,6 +46,7 @@
             text-align: center;
             margin: 0;
             padding: 10px;
+            font-size: 28px;
         }
 
         .lang-switcher {
@@ -53,25 +58,18 @@
             gap: 10px;
         }
 
-        @media (max-width: 768px) {
-            .lang-switcher {
-                position: static;
-                transform: none;
-                margin-top: 15px;
-                width: 100%;
-                justify-content: center;
-            }
-        }
 
         .lang-btn {
             background-color: var(--card-bg);
             color: var(--text-color);
             border: 1px solid var(--text-color);
-            padding: 5px 15px;
+            padding: 6px 16px;
             border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.2s;
+            /* Verhindert den 300ms Delay beim Tippen auf Handys */
+            touch-action: manipulation;
         }
 
         .lang-btn.active {
@@ -84,12 +82,13 @@
         .progress-container {
             max-width: 800px;
             width: 100%;
-            margin: 0 auto 15px auto; /* Abstand nach unten reduziert wegen Info-Box */
+            box-sizing: border-box;
+            margin: 0 auto 15px auto;
             background-color: var(--card-bg);
             padding: 15px;
             border-radius: 10px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             position: sticky;
             top: 10px;
             z-index: 100;
@@ -98,7 +97,7 @@
         .progress-bar-bg {
             background-color: #111;
             border-radius: 10px;
-            height: 20px;
+            height: 16px;
             width: 100%;
             margin-top: 10px;
             overflow: hidden;
@@ -115,7 +114,7 @@
         .wip-notice {
             max-width: 800px;
             width: 100%;
-            margin: 0 auto 30px auto;
+            margin: 0 auto 25px auto;
             background-color: rgba(255, 177, 66, 0.1);
             border-left: 4px solid var(--warning-color);
             padding: 12px 15px;
@@ -132,21 +131,22 @@
         }
 
         .region-section {
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
         .region-title {
             border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
             display: inline-block;
             color: var(--accent-color);
+            font-size: 22px;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 15px;
         }
 
         /* Einzelne Karten */
@@ -154,17 +154,23 @@
             background-color: var(--card-bg);
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.2s, opacity 0.3s, border 0.2s;
             display: flex;
             flex-direction: column;
             cursor: pointer;
             border: 2px solid transparent;
+            touch-action: manipulation;
+            /* Verhindert blaue Auswahlmarkierung auf mobilen Geräten */
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-color);
+        /* Hover-Effekt nur für Geräte mit Maus */
+        @media (hover: hover) {
+            .card:hover {
+                transform: translateY(-5px);
+                border-color: var(--accent-color);
+            }
         }
 
         .card.completed {
@@ -188,7 +194,7 @@
 
         .card img {
             width: 100%;
-            height: 160px;
+            height: 150px;
             object-fit: cover;
             border-bottom: 2px solid #111;
             display: block;
@@ -204,14 +210,10 @@
             border-radius: 6px;
             font-size: 16px;
             cursor: pointer;
-            transition: background 0.2s, transform 0.2s;
+
             z-index: 10;
         }
 
-        .zoom-icon:hover {
-            background-color: var(--accent-color);
-            transform: scale(1.1);
-        }
 
         .card-content {
             padding: 15px;
@@ -223,8 +225,9 @@
 
         .card p {
             font-size: 14px;
-            line-height: 1.5;
+            line-height: 1.4;
             margin-bottom: 15px;
+            margin-top: 0;
         }
 
         .checkbox-container {
@@ -236,8 +239,8 @@
         }
 
         .checkbox-container input {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             margin-right: 10px;
             accent-color: var(--accent-color);
         }
@@ -246,7 +249,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 160px;
+            height: 150px;
             background-color: #111;
             color: #555;
             font-style: italic;
@@ -255,18 +258,19 @@
 
         /* Modal (Lightbox) */
         .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 9999; 
+            display: none;
+            position: fixed;
+            z-index: 9999;
             left: 0;
             top: 0;
-            width: 100%; 
-            height: 100%; 
-            background-color: rgba(0,0,0,0.9);
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
             justify-content: center;
             align-items: center;
             opacity: 0;
             transition: opacity 0.3s ease;
+            overflow: hidden; /* Wichtig fürs Panning */
         }
 
         .modal.show {
@@ -275,26 +279,26 @@
         }
 
         .modal-content {
-            max-width: 90%;
-            max-height: 90vh;
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.8);
-            border: 2px solid var(--accent-color);
+            max-width: 100%;
+            max-height: 100vh;
+            border-radius: 4px;
+            /* Vorbereitung für JS Zoom/Pan */
+            will-change: transform;
+            transform-origin: center center;
+            transition: transform 0.1s ease-out;
         }
 
         .close-modal {
             position: absolute;
             top: 20px;
-            right: 30px;
+            right: 25px;
             color: #fff;
             font-size: 40px;
             font-weight: bold;
             cursor: pointer;
-            transition: color 0.2s;
-        }
+            z-index: 10000;
 
-        .close-modal:hover {
-            color: var(--accent-color);
+
         }
 
         /* Footer / Credits */
@@ -308,295 +312,527 @@
         footer a {
             color: var(--accent-color);
             text-decoration: none;
-            transition: color 0.2s;
+
         }
 
-        footer a:hover {
-            color: var(--accent-hover);
-            text-decoration: underline;
+        /* MOBILE ANPASSUNGEN */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+
+            .lang-switcher {
+                position: relative;
+                transform: none;
+                justify-content: center;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .progress-container {
+                padding: 10px;
+                top: 5px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="header-container">
-        <h1 id="page-title">🦇 Moonlight Peaks - Vampster Tracker</h1>
-        <div class="lang-switcher">
-            <button class="lang-btn" id="btn-de" onclick="setLanguage('de')">🇩🇪 DE</button>
-            <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">🇬🇧 EN</button>
-        </div>
+<div class="header-container">
+    <h1 id="page-title">🦇 Moonlight Peaks - Vampster Tracker</h1>
+    <div class="lang-switcher">
+        <button class="lang-btn" id="btn-de" onclick="setLanguage('de')">🇩🇪 DE</button>
+        <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">🇬🇧 EN</button>
     </div>
-    
-    <div class="progress-container">
-        <h3 style="margin: 0;"><span id="progress-label">Fortschritt:</span> <span id="progress-text">0 / 0</span></h3>
-        <div class="progress-bar-bg">
-            <div class="progress-bar-fill" id="progress-bar"></div>
-        </div>
+</div>
+
+<div class="progress-container">
+    <h3 style="margin: 0; font-size: 16px;"><span id="progress-label">Fortschritt:</span> <span id="progress-text">0 / 0</span></h3>
+    <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-bar"></div>
     </div>
+</div>
 
-    <!-- Neue Info-Box -->
-    <div class="wip-notice" id="wip-notice">
-        <!-- Text wird via JavaScript geladen -->
-    </div>
+<!-- Info-Box -->
+<div class="wip-notice" id="wip-notice"></div>
 
-    <div class="main-content" id="tracker-container"></div>
 
-    <div id="image-modal" class="modal" onclick="closeModal()">
-        <span class="close-modal">&times;</span>
-        <img class="modal-content" id="modal-img">
-    </div>
+<div class="main-content" id="tracker-container"></div>
 
-    <footer>
-        <span id="credits-label">Informationen & Bilder stammen von</span> 
-        <a href="https://www.thegamer.com/moonlight-peaks-vampsters-location-guide/" target="_blank" rel="noopener noreferrer">
-            TheGamer
-        </a>
-    </footer>
+<!-- Modal schließt sich bei Klick auf den Hintergrund -->
+<div id="image-modal" class="modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <!-- onclick=stopPropagation verhindert das Schließen, wenn man auf das Bild selbst tippt -->
+    <img class="modal-content" id="modal-img" onclick="event.stopPropagation()">
+</div>
 
-    <script>
-        // ==========================================
-        // ÜBERSETZUNGEN (UI)
-        // ==========================================
-        const translations = {
-            de: {
-                title: "🦇 Moonlight Peaks - Vampster Tracker",
-                progress: "Fortschritt:",
-                collected: "Gesammelt",
-                noImage: "Kein Bild vorhanden",
-                zoom: "Bild vergrößern",
-                credits: "Informationen & Bilder stammen von",
-                wip: "⚠️ <strong>Hinweis:</strong> Dieser Tracker ist noch in Arbeit (WIP)! Aktuell sind erst 57 von 100 Vampstern im Guide bekannt. Die Liste wird aktualisiert, sobald neue Fundorte entdeckt werden."
+<footer>
+    <span id="credits-label">Informationen & Bilder stammen von</span>
+    <a href="https://www.thegamer.com/moonlight-peaks-vampsters-location-guide/" target="_blank" rel="noopener noreferrer">
+        TheGamer
+    </a>
+</footer>
+
+<script>
+    // ==========================================
+    // ÜBERSETZUNGEN (UI)
+    // ==========================================
+    const translations = {
+        de: {
+            title: "🦇 Moonlight Peaks - Vampster Tracker",
+            progress: "Fortschritt:",
+            collected: "Gesammelt",
+            noImage: "Kein Bild vorhanden",
+            zoom: "Bild vergrößern",
+            credits: "Informationen & Bilder stammen von",
+            wip: "⚠️ <strong>Hinweis:</strong> Dieser Tracker ist noch in Arbeit (WIP)! Aktuell sind erst 57 von 100 Vampstern im Guide bekannt. Die Liste wird aktualisiert, sobald neue Fundorte entdeckt werden."
+        },
+        en: {
+            title: "🦇 Moonlight Peaks - Vampster Tracker",
+            progress: "Progress:",
+            collected: "Collected",
+            noImage: "No image available",
+            zoom: "Zoom image",
+            credits: "Information & images sourced from",
+            wip: "⚠️ <strong>Note:</strong> This tracker is a work in progress (WIP)! Currently, only 57 out of 100 Vampsters are known in the guide. The list will be updated as soon as new locations are discovered."
+        }
+    };
+
+    // ==========================================
+    // VAMPSTER DATEN MIT EINDEUTIGEN IDs
+    // ==========================================
+    const vampstersData = {
+        "Cave Of Echoes": [
+
+
+            {
+                "id": "vamp_coe_01",
+                "desc": {
+                    "de": "Nimm den nebligen Pfad rechts vom Vampster-Zuhause und folge der Höhlenwand, bis du ihn nahe der rosa Pflanze findest.",
+                    "en": "Take the misty path to the right of the Vampster home, following the edge of the cave wall until you find it near this pink plant."
+                },
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-13_38_10.png"
             },
-            en: {
-                title: "🦇 Moonlight Peaks - Vampster Tracker",
-                progress: "Progress:",
-                collected: "Collected",
-                noImage: "No image available",
-                zoom: "Zoom image",
-                credits: "Information & images sourced from",
-                wip: "⚠️ <strong>Note:</strong> This tracker is a work in progress (WIP)! Currently, only 57 out of 100 Vampsters are known in the guide. The list will be updated as soon as new locations are discovered."
-            }
-        };
 
-        // ==========================================
-        // VAMPSTER DATEN MIT EINDEUTIGEN IDs
-        // ==========================================
-        const vampstersData = {
-            "Cave Of Echoes": [
-                { 
-                    "id": "vamp_coe_01",
-                    "desc": {
-                        "de": "Nimm den nebligen Pfad rechts vom Vampster-Zuhause und folge der Höhlenwand, bis du ihn nahe der rosa Pflanze findest.",
-                        "en": "Take the misty path to the right of the Vampster home, following the edge of the cave wall until you find it near this pink plant."
-                    }, 
-                    "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-13_38_10.png" 
+
+            {
+                "id": "vamp_coe_02",
+                "desc": {
+                    "de": "Nimm den Pfad links vom Vampster-Zuhause, um diesen hier in der Mitte zu finden.",
+                    "en": "Take the path left of the Vampster home to find this one in the center."
                 },
-                { 
-                    "id": "vamp_coe_02",
-                    "desc": {
-                        "de": "Nimm den Pfad links vom Vampster-Zuhause, um diesen hier in der Mitte zu finden.",
-                        "en": "Take the path left of the Vampster home to find this one in the center."
-                    }, 
-                    "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-13_39_00.png" 
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-13_39_00.png"
+            },
+
+
+            {
+                "id": "vamp_coe_03",
+                "desc": {
+                    "de": "Nimm den unteren rechten Pfad und folge ihm, bis du diesen kleinen Kerl bei einer Glocke findest.",
+                    "en": "Take the lower right path and continue along until you find this guy by a bell."
                 },
-                { 
-                    "id": "vamp_coe_03",
-                    "desc": {
-                        "de": "Nimm den unteren rechten Pfad und folge ihm, bis du diesen kleinen Kerl bei einer Glocke findest.",
-                        "en": "Take the lower right path and continue along until you find this guy by a bell."
-                    }, 
-                    "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-13_40_06.png" 
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-13_40_06.png"
+            },
+
+
+            {
+                "id": "vamp_coe_04",
+                "desc": {
+                    "de": "Vom vorherigen Fundort (Glocke) nimmst du den unteren rechten Pfad bis zum Rand des Wassers. Der Vampster ist bei den Felsen.",
+                    "en": "From the previous Vampster location, take the lower right path to the water's edge. This Vampster is by the rocks."
                 },
-                { 
-                    "id": "vamp_coe_04",
-                    "desc": {
-                        "de": "Vom vorherigen Fundort (Glocke) nimmst du den unteren rechten Pfad bis zum Rand des Wassers. Der Vampster ist bei den Felsen.",
-                        "en": "From the previous Vampster location, take the lower right path to the water's edge. This Vampster is by the rocks."
-                    }, 
-                    "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-13_46_28.png" 
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-13_46_28.png"
+            },
+            {
+                "id": "vamp_coe_05",
+                "desc": {
+                    "de": "Vom Standort der Glocke folgst du dem Weg geradeaus nach oben zu einem kreisförmigen Platz. Der Vampster ist links im Schilf.",
+                    "en": "From the Vampster's location at the bell, follow the path straight up to a circular space. The Vampster is in the reeds to the left."
                 },
-                { 
-                    "id": "vamp_coe_05",
-                    "desc": {
-                        "de": "Vom Standort der Glocke folgst du dem Weg geradeaus nach oben zu einem kreisförmigen Platz. Der Vampster ist links im Schilf.",
-                        "en": "From the Vampster's location at the bell, follow the path straight up to a circular space. The Vampster is in the reeds to the left."
-                    }, 
-                    "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-13_48_27.png" 
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-13_48_27.png"
+            }
+
+
+        ],
+        "Town": [
+            {
+                "id": "vamp_town_01",
+                "desc": {"de": "Hinter dem Gasthaus 'The Broken Lamp'.", "en": "Behind The Broken Lamp inn"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-16_30_33.png"
+            },
+            {
+                "id": "vamp_town_02",
+                "desc": {"de": "In der Nähe von Elviras Haus.", "en": "Near Elvira's house"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-12_29_24.png"
+            },
+            {
+                "id": "vamp_town_03",
+                "desc": {"de": "Auf dem Pier während des Loveage-Festivals.", "en": "On the pier during the Loveage festival"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-04_07_2026-12_25_07.png"
+            },
+            {
+                "id": "vamp_town_04",
+                "desc": {"de": "Auf dem Pier während des Loveage-Festivals (Zweiter Vampster).", "en": "On the pier during the Loveage festival"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-04_07_2026-12_38_30.png"
+            },
+            {
+                "id": "vamp_town_05",
+                "desc": {"de": "Im Crest Garden.", "en": "In the Crest Garden"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-04_07_2026-13_16_58.png"
+            },
+            {
+                "id": "vamp_town_06",
+                "desc": {"de": "Rechts von Noels Haus.", "en": "To the right of Noel's house"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-04_07_2026-14_37_39.png"
+            },
+            {
+                "id": "vamp_town_07",
+                "desc": {"de": "Im Café 'Coffee & Coffins'.", "en": "Inside Coffee & Coffins"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-11_27_48.png"
+            },
+            {
+                "id": "vamp_town_08",
+                "desc": {"de": "Im Café 'Coffee & Coffins', hinter dem Ladenbereich.", "en": "Inside Coffee & Coffins, behind the shop area."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-17_24_40.png"
+            },
+            {
+                "id": "vamp_town_09",
+                "desc": {"de": "Im Café 'Coffee & Coffins', oben im Wohnbereich.", "en": "Inside Coffee & Coffins, upstairs in the living area."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-17_23_08.png"
+            },
+            {
+                "id": "vamp_town_10",
+                "desc": {"de": "Hinter dem 'Coffee & Coffins', beim Zitronenbaum.", "en": "Behind Coffee & Coffins, by the lemon tree."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-20_54_38.png"
+            },
+            {
+                "id": "vamp_town_11",
+                "desc": {"de": "Im Gasthaus 'The Broken Lamp', auf der rechten Seite.", "en": "Inside The Broken Lamp inn, to the right."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-11_55_13.png"
+            },
+            {
+                "id": "vamp_town_12",
+                "desc": {"de": "Im Gasthaus 'The Broken Lamp', auf der linken Seite.", "en": "Inside the Broken Lamp inn, to the left."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_41_45.png"
+            },
+            {
+                "id": "vamp_town_13",
+                "desc": {"de": "In der Schmiede 'Howling Hammer', neben der Werkbank.", "en": "Inside the Howling Hammer, beside the workbench"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-12_30_02.png"
+            },
+            {
+                "id": "vamp_town_14",
+                "desc": {"de": "Im 'Howling Hammer', im oberen Stockwerk neben dem Sofa.", "en": "Inside the Howling Hammer, upstairs beside the sofa."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-12_28_56.png"
+            },
+            {
+                "id": "vamp_town_15",
+                "desc": {"de": "Im 'Howling Hammer', im rechten Schlafzimmer beim Bücherregal.", "en": "Inside the Howling Hammer, in the right bedroom by the bookcase."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-12_29_30.png"
+            },
+            {
+                "id": "vamp_town_16",
+                "desc": {"de": "In Sagas Zuhause, beim Sofa.", "en": "In Saga's home, by the sofa."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-15_49_45.png"
+            },
+            {
+                "id": "vamp_town_17",
+                "desc": {"de": "In Elviras Zuhause, beim Spiegel.", "en": "In Elvira's home, by the mirror."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-15_55_35.png"
+            },
+            {
+                "id": "vamp_town_18",
+                "desc": {"de": "In Elviras Zuhause, links unter der Leiter.", "en": "In Elvira's home, under the ladder on the left."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-15_59_00.png"
+            },
+            {
+                "id": "vamp_town_19",
+                "desc": {"de": "In Samaels Zuhause, beim Kühlschrank.", "en": "In Samael's home, by the refrigerator."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_02_37.png"
+            },
+            {
+                "id": "vamp_town_20",
+                "desc": {"de": "In Samaels Zuhause, im Nebenraum, beim Sofa.", "en": "In Samael's home, in the next room, by the sofa."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_03_01.png"
+            },
+            {
+                "id": "vamp_town_21",
+                "desc": {"de": "An der Treppe des Death's Pier, südöstlich der Stadt.", "en": "By the steps of Death's pier, southeast of the town."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_32_32.png"
+            },
+            {
+                "id": "vamp_town_22",
+                "desc": {"de": "Im Laden 'Webb of Wonders', hinten rechts.", "en": "Inside Webb of Wonders, to the back at the right."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_50_50.png"
+            },
+            {
+                "id": "vamp_town_23",
+                "desc": {"de": "Im 'Webb of Wonders', bei der Treppe.", "en": "Inside Webb of Wonders, by the stairs."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_53_14.png"
+            },
+            {
+                "id": "vamp_town_24",
+                "desc": {"de": "Im 'Webb of Wonders', im oberen Stockwerk auf der rechten Seite.", "en": "Inside Webb of Wonders, upstairs to the right."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_53_27.png"
+            },
+            {
+                "id": "vamp_town_25",
+                "desc": {"de": "Auf dem Mitternachtsmarkt.", "en": "At the midnight market."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-17_57_31.png"
+            },
+            {
+                "id": "vamp_town_26",
+                "desc": {"de": "In Dragans Haus.", "en": "In Dragan's house."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-18_06_35.png"
+            },
+            {
+                "id": "vamp_town_27",
+                "desc": {"de": "Im Haus der Familie Henderson, beim Fernseher.", "en": "In the Henderson's home, by the TV."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-17_33_06.png"
+            },
+            {
+                "id": "vamp_town_28",
+                "desc": {"de": "Im Haus der Familie Henderson, oben in einem Schlafzimmer.", "en": "In the Henderson's home, upstairs in a bedroom"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-17_31_59.png"
+            }
+        ],
+        "Moonlit Pines": [
+            {
+                "id": "vamp_mp_01",
+                "desc": {"de": "In der Nähe des kleinen Teichs.", "en": "Near the small pond"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-10_59_40.png"
+            },
+            {
+                "id": "vamp_mp_02",
+                "desc": {"de": "Nördlich des Kürbisfelds.", "en": "North of the pumpkin patch"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-12_08_34.png"
+            },
+            {
+                "id": "vamp_mp_03",
+                "desc": {"de": "Links vom Pfad, der von Groovy Grove zu den Moonlit Pines führt.", "en": "To the left of the path from Groovy Grove to Moonlit Pines."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-12_47_54.png"
+            },
+            {
+                "id": "vamp_mp_04",
+                "desc": {"de": "An den Stufen, die zu dem sandigen Angelplatz rechts vom Weg führen.", "en": "By the steps that lead to the sandy fishing spot to the right of the path."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-13_07_42.png"
+            },
+            {
+                "id": "vamp_mp_05",
+                "desc": {"de": "Ganz im Norden der Moonlit Pines, links von der blauen Feuerstelle.", "en": "At the very north of Moonlit Pines, to the left of the blue firepit."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-16_08_18.png"
+            },
+            {
+                "id": "vamp_mp_06",
+                "desc": {"de": "In Fionas Zuhause, beim Zauberbuch.", "en": "In Fiona's home, by the spellbook."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_19_13.png"
+            },
+            {
+                "id": "vamp_mp_07",
+                "desc": {"de": "In der Crystal Cave (Kristallhöhle) auf der rechten Seite.", "en": "In the Crystal Cave to the right."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-21_08_16.png"
+            },
+            {
+                "id": "vamp_mp_08",
+                "desc": {"de": "In der Crystal Cave (Kristallhöhle) bei einem Boot.", "en": "In the Crystal Cave by a boat."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-21_09_43.png"
+            }
+        ],
+        "Misty Shores": [
+            {
+                "id": "vamp_ms_01",
+                "desc": {"de": "Beim Moonlight Tower.", "en": "By the Moonlight Tower"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-12_34_11.png"
+            },
+            {
+                "id": "vamp_ms_02",
+                "desc": {"de": "Im Moonlight Tower.", "en": "Inside the Moonlit Tower."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/media-player-06_07_2026-23_43_32.png"
+            },
+            {
+                "id": "vamp_ms_03",
+                "desc": {"de": "Am Lagerfeuer, in der Nähe der kleinen grünen Brücke.", "en": "By the campfire, near the small green bridge."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-23_36_01.png"
+            },
+            {
+                "id": "vamp_ms_04",
+                "desc": {"de": "In der Ambrosia Mansion, in der Küche.", "en": "Inside the Ambrosia Mansion, in the kitchen."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-18_10_34.png"
+            },
+            {
+                "id": "vamp_ms_05",
+                "desc": {"de": "In der Ambrosia Mansion, in der linken Ecke.", "en": "Inside the Ambrosia Mansion, in the left corner."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-18_13_01.png"
+            },
+            {
+                "id": "vamp_ms_06",
+                "desc": {"de": "Im oberen Stockwerk der Ambrosia Mansion, neben dem Sarg.", "en": "Upstairs in the Ambrosia Mansion, beside the coffin."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-18_16_56.png"
+            }
+        ],
+        "Groovy Grove": [
+            {
+                "id": "vamp_gg_01",
+                "desc": {"de": "Am langen Strandabschnitt.", "en": "On the long stretch of beach"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-12_11_20.png"
+            },
+            {
+                "id": "vamp_gg_02",
+                "desc": {"de": "Rechts vom kleinen Wasserfall.", "en": "To the right of the small waterfall"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-12_15_51.png"
+            },
+            {
+                "id": "vamp_gg_03",
+                "desc": {"de": "An der Kante links von der Krypta.", "en": "By the edge to the left of the crypt"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-12_42_56.png"
+            },
+            {
+                "id": "vamp_gg_04",
+                "desc": {"de": "In Viktors Krypta.", "en": "Inside Viktor's crypt."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-04_07_2026-13_54_47.png"
+            }
+        ],
+        "Howling Marshes": [
+            {
+                "id": "vamp_hm_01",
+                "desc": {"de": "Ganz im Osten, in der Nähe eines Feenrings aus gelben Pilzen.", "en": "To the very east, near a fairy ring of yellow mushrooms."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-04_07_2026-14_46_27.png"
+            },
+            {
+                "id": "vamp_hm_02",
+                "desc": {"de": "Unter der kaputten Brücke in den Howling Marshes.", "en": "Under the broken bridge in Howling Marshes."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-21_24_44.png"
+            },
+            {
+                "id": "vamp_hm_03",
+                "desc": {"de": "Im Logan-Haus.", "en": "Inside the Logan House."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-21_37_56.png"
+            },
+            {
+                "id": "vamp_hm_04",
+                "desc": {"de": "Im Westen, beim knorrigen Baum.", "en": "To the west, by the gnarled tree."},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-21_44_52.png"
+            }
+        ],
+        "Khazan Temple": [
+            {
+                "id": "vamp_kt_01",
+                "desc": {"de": "Rechts vom Tempel.", "en": "To the right of the temple"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-10_33_12.png"
+            },
+            {
+                "id": "vamp_kt_02",
+                "desc": {"de": "Links vom Tempel.", "en": "To the left of the temple"},
+                "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-10_32_39.png"
+            }
+        ]
+    };
+
+    let totalVampsters = 0;
+    let collectedVampsters = 0;
+    let currentLang = 'de';
+
+    // --- SPRACHE & UI ---
+    function setLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('vampster_lang', lang);
+
+        document.getElementById('btn-de').classList.toggle('active', lang === 'de');
+        document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+        document.title = translations[lang].title;
+        document.getElementById('page-title').innerText = translations[lang].title;
+        document.getElementById('progress-label').innerText = translations[lang].progress;
+        document.getElementById('credits-label').innerText = translations[lang].credits;
+        document.getElementById('wip-notice').innerHTML = translations[lang].wip;
+
+        renderTracker();
+    }
+
+
+    // --- FORTSCHRITT ---
+    function updateProgress() {
+        document.getElementById('progress-text').innerText = `${collectedVampsters} / ${totalVampsters}`;
+        const percentage = totalVampsters === 0 ? 0 : (collectedVampsters / totalVampsters) * 100;
+        document.getElementById('progress-bar').style.width = percentage + '%';
+    }
+
+    // --- KARTEN-KLICK ---
+    function handleCardClick(event, id) {
+        // Verhindert, dass Checkbox doppelt getoggelt wird
+        if (event.target.tagName.toLowerCase() === 'input') {
+            event.target.checked = !event.target.checked;
+        }
+
+        const card = document.getElementById(`card-${id}`);
+        const checkbox = document.getElementById(`checkbox-${id}`);
+
+        const isNowChecked = !checkbox.checked;
+        checkbox.checked = isNowChecked;
+
+        if (isNowChecked) {
+            localStorage.setItem(`vampster_${id}`, 'true');
+            card.classList.add('completed');
+            collectedVampsters++;
+        } else {
+            localStorage.removeItem(`vampster_${id}`);
+            card.classList.remove('completed');
+            collectedVampsters--;
+        }
+
+        updateProgress();
+    }
+
+    // --- RENDER GRID ---
+    function renderTracker() {
+        const container = document.getElementById('tracker-container');
+        container.innerHTML = '';
+
+        totalVampsters = 0;
+        collectedVampsters = 0;
+
+        const uiStrings = translations[currentLang];
+
+        for (const [region, vampsters] of Object.entries(vampstersData)) {
+            const section = document.createElement('div');
+            section.className = 'region-section';
+
+            const title = document.createElement('h2');
+            title.className = 'region-title';
+            title.innerText = region;
+            section.appendChild(title);
+
+            const grid = document.createElement('div');
+            grid.className = 'grid';
+
+            vampsters.forEach((vampster) => {
+                totalVampsters++;
+
+                const uniqueId = vampster.id;
+                const isCollected = localStorage.getItem(`vampster_${uniqueId}`) === 'true';
+
+                if (isCollected) {
+                    collectedVampsters++;
                 }
-            ],
-            "Town": [
-                { "id": "vamp_town_01", "desc": { "de": "Hinter dem Gasthaus 'The Broken Lamp'.", "en": "Behind The Broken Lamp inn" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-16_30_33.png" },
-                { "id": "vamp_town_02", "desc": { "de": "In der Nähe von Elviras Haus.", "en": "Near Elvira's house" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-12_29_24.png" },
-                { "id": "vamp_town_03", "desc": { "de": "Auf dem Pier während des Loveage-Festivals.", "en": "On the pier during the Loveage festival" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-04_07_2026-12_25_07.png" },
-                { "id": "vamp_town_04", "desc": { "de": "Auf dem Pier während des Loveage-Festivals (Zweiter Vampster).", "en": "On the pier during the Loveage festival" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-04_07_2026-12_38_30.png" },
-                { "id": "vamp_town_05", "desc": { "de": "Im Crest Garden.", "en": "In the Crest Garden" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-04_07_2026-13_16_58.png" },
-                { "id": "vamp_town_06", "desc": { "de": "Rechts von Noels Haus.", "en": "To the right of Noel's house" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-04_07_2026-14_37_39.png" },
-                { "id": "vamp_town_07", "desc": { "de": "Im Café 'Coffee & Coffins'.", "en": "Inside Coffee & Coffins" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-11_27_48.png" },
-                { "id": "vamp_town_08", "desc": { "de": "Im Café 'Coffee & Coffins', hinter dem Ladenbereich.", "en": "Inside Coffee & Coffins, behind the shop area." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-17_24_40.png" },
-                { "id": "vamp_town_09", "desc": { "de": "Im Café 'Coffee & Coffins', oben im Wohnbereich.", "en": "Inside Coffee & Coffins, upstairs in the living area." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-17_23_08.png" },
-                { "id": "vamp_town_10", "desc": { "de": "Hinter dem 'Coffee & Coffins', beim Zitronenbaum.", "en": "Behind Coffee & Coffins, by the lemon tree." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-20_54_38.png" },
-                { "id": "vamp_town_11", "desc": { "de": "Im Gasthaus 'The Broken Lamp', auf der rechten Seite.", "en": "Inside The Broken Lamp inn, to the right." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-11_55_13.png" },
-                { "id": "vamp_town_12", "desc": { "de": "Im Gasthaus 'The Broken Lamp', auf der linken Seite.", "en": "Inside the Broken Lamp inn, to the left." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_41_45.png" },
-                { "id": "vamp_town_13", "desc": { "de": "In der Schmiede 'Howling Hammer', neben der Werkbank.", "en": "Inside the Howling Hammer, beside the workbench" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-12_30_02.png" },
-                { "id": "vamp_town_14", "desc": { "de": "Im 'Howling Hammer', im oberen Stockwerk neben dem Sofa.", "en": "Inside the Howling Hammer, upstairs beside the sofa." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-12_28_56.png" },
-                { "id": "vamp_town_15", "desc": { "de": "Im 'Howling Hammer', im rechten Schlafzimmer beim Bücherregal.", "en": "Inside the Howling Hammer, in the right bedroom by the bookcase." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-12_29_30.png" },
-                { "id": "vamp_town_16", "desc": { "de": "In Sagas Zuhause, beim Sofa.", "en": "In Saga's home, by the sofa." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-15_49_45.png" },
-                { "id": "vamp_town_17", "desc": { "de": "In Elviras Zuhause, beim Spiegel.", "en": "In Elvira's home, by the mirror." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-15_55_35.png" },
-                { "id": "vamp_town_18", "desc": { "de": "In Elviras Zuhause, links unter der Leiter.", "en": "In Elvira's home, under the ladder on the left." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-15_59_00.png" },
-                { "id": "vamp_town_19", "desc": { "de": "In Samaels Zuhause, beim Kühlschrank.", "en": "In Samael's home, by the refrigerator." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_02_37.png" },
-                { "id": "vamp_town_20", "desc": { "de": "In Samaels Zuhause, im Nebenraum, beim Sofa.", "en": "In Samael's home, in the next room, by the sofa." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_03_01.png" },
-                { "id": "vamp_town_21", "desc": { "de": "An der Treppe des Death's Pier, südöstlich der Stadt.", "en": "By the steps of Death's pier, southeast of the town." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_32_32.png" },
-                { "id": "vamp_town_22", "desc": { "de": "Im Laden 'Webb of Wonders', hinten rechts.", "en": "Inside Webb of Wonders, to the back at the right." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_50_50.png" },
-                { "id": "vamp_town_23", "desc": { "de": "Im 'Webb of Wonders', bei der Treppe.", "en": "Inside Webb of Wonders, by the stairs." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_53_14.png" },
-                { "id": "vamp_town_24", "desc": { "de": "Im 'Webb of Wonders', im oberen Stockwerk auf der rechten Seite.", "en": "Inside Webb of Wonders, upstairs to the right." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_53_27.png" },
-                { "id": "vamp_town_25", "desc": { "de": "Auf dem Mitternachtsmarkt.", "en": "At the midnight market." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-17_57_31.png" },
-                { "id": "vamp_town_26", "desc": { "de": "In Dragans Haus.", "en": "In Dragan's house." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-18_06_35.png" },
-                { "id": "vamp_town_27", "desc": { "de": "Im Haus der Familie Henderson, beim Fernseher.", "en": "In the Henderson's home, by the TV." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-17_33_06.png" },
-                { "id": "vamp_town_28", "desc": { "de": "Im Haus der Familie Henderson, oben in einem Schlafzimmer.", "en": "In the Henderson's home, upstairs in a bedroom" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-17_31_59.png" }
-            ],
-            "Moonlit Pines": [
-                { "id": "vamp_mp_01", "desc": { "de": "In der Nähe des kleinen Teichs.", "en": "Near the small pond" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-10_59_40.png" },
-                { "id": "vamp_mp_02", "desc": { "de": "Nördlich des Kürbisfelds.", "en": "North of the pumpkin patch" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-12_08_34.png" },
-                { "id": "vamp_mp_03", "desc": { "de": "Links vom Pfad, der von Groovy Grove zu den Moonlit Pines führt.", "en": "To the left of the path from Groovy Grove to Moonlit Pines." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-12_47_54.png" },
-                { "id": "vamp_mp_04", "desc": { "de": "An den Stufen, die zu dem sandigen Angelplatz rechts vom Weg führen.", "en": "By the steps that lead to the sandy fishing spot to the right of the path." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-13_07_42.png" },
-                { "id": "vamp_mp_05", "desc": { "de": "Ganz im Norden der Moonlit Pines, links von der blauen Feuerstelle.", "en": "At the very north of Moonlit Pines, to the left of the blue firepit." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-16_08_18.png" },
-                { "id": "vamp_mp_06", "desc": { "de": "In Fionas Zuhause, beim Zauberbuch.", "en": "In Fiona's home, by the spellbook." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-16_19_13.png" },
-                { "id": "vamp_mp_07", "desc": { "de": "In der Crystal Cave (Kristallhöhle) auf der rechten Seite.", "en": "In the Crystal Cave to the right." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-21_08_16.png" },
-                { "id": "vamp_mp_08", "desc": { "de": "In der Crystal Cave (Kristallhöhle) bei einem Boot.", "en": "In the Crystal Cave by a boat." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-21_09_43.png" }
-            ],
-            "Misty Shores": [
-                { "id": "vamp_ms_01", "desc": { "de": "Beim Moonlight Tower.", "en": "By the Moonlight Tower" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-12_34_11.png" },
-                { "id": "vamp_ms_02", "desc": { "de": "Im Moonlight Tower.", "en": "Inside the Moonlit Tower." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/media-player-06_07_2026-23_43_32.png" },
-                { "id": "vamp_ms_03", "desc": { "de": "Am Lagerfeuer, in der Nähe der kleinen grünen Brücke.", "en": "By the campfire, near the small green bridge." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-23_36_01.png" },
-                { "id": "vamp_ms_04", "desc": { "de": "In der Ambrosia Mansion, in der Küche.", "en": "Inside the Ambrosia Mansion, in the kitchen." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-18_10_34.png" },
-                { "id": "vamp_ms_05", "desc": { "de": "In der Ambrosia Mansion, in der linken Ecke.", "en": "Inside the Ambrosia Mansion, in the left corner." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-18_13_01.png" },
-                { "id": "vamp_ms_06", "desc": { "de": "Im oberen Stockwerk der Ambrosia Mansion, neben dem Sarg.", "en": "Upstairs in the Ambrosia Mansion, beside the coffin." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-18_16_56.png" }
-            ],
-            "Groovy Grove": [
-                { "id": "vamp_gg_01", "desc": { "de": "Am langen Strandabschnitt.", "en": "On the long stretch of beach" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-12_11_20.png" },
-                { "id": "vamp_gg_02", "desc": { "de": "Rechts vom kleinen Wasserfall.", "en": "To the right of the small waterfall" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-12_15_51.png" },
-                { "id": "vamp_gg_03", "desc": { "de": "An der Kante links von der Krypta.", "en": "By the edge to the left of the crypt" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-03_07_2026-12_42_56.png" },
-                { "id": "vamp_gg_04", "desc": { "de": "In Viktors Krypta.", "en": "Inside Viktor's crypt." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-04_07_2026-13_54_47.png" }
-            ],
-            "Howling Marshes": [
-                { "id": "vamp_hm_01", "desc": { "de": "Ganz im Osten, in der Nähe eines Feenrings aus gelben Pilzen.", "en": "To the very east, near a fairy ring of yellow mushrooms." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-04_07_2026-14_46_27.png" },
-                { "id": "vamp_hm_02", "desc": { "de": "Unter der kaputten Brücke in den Howling Marshes.", "en": "Under the broken bridge in Howling Marshes." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-21_24_44.png" },
-                { "id": "vamp_hm_03", "desc": { "de": "Im Logan-Haus.", "en": "Inside the Logan House." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-21_37_56.png" },
-                { "id": "vamp_hm_04", "desc": { "de": "Im Westen, beim knorrigen Baum.", "en": "To the west, by the gnarled tree." }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-06_07_2026-21_44_52.png" }
-            ],
-            "Khazan Temple": [
-                { "id": "vamp_kt_01", "desc": { "de": "Rechts vom Tempel.", "en": "To the right of the temple" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-10_33_12.png" },
-                { "id": "vamp_kt_02", "desc": { "de": "Links vom Tempel.", "en": "To the left of the temple" }, "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-05_07_2026-10_32_39.png" }
-            ]
-        };
 
-        let totalVampsters = 0;
-        let collectedVampsters = 0;
-        let currentLang = 'de';
-
-        // Setzt die Sprache, speichert sie und lädt die Oberfläche neu
-        function setLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('vampster_lang', lang);
-            
-            document.getElementById('btn-de').classList.toggle('active', lang === 'de');
-            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-
-            document.title = translations[lang].title;
-            document.getElementById('page-title').innerText = translations[lang].title;
-            document.getElementById('progress-label').innerText = translations[lang].progress;
-            document.getElementById('credits-label').innerText = translations[lang].credits;
-            document.getElementById('wip-notice').innerHTML = translations[lang].wip;
-
-            renderTracker();
-        }
-
-        // Modal Funktionen
-        function openModal(imgSrc, event) {
-            event.stopPropagation();
-            const modal = document.getElementById('image-modal');
-            document.getElementById('modal-img').src = imgSrc;
-            modal.classList.add('show');
-        }
-
-        function closeModal() {
-            document.getElementById('image-modal').classList.remove('show');
-        }
-
-        // Fortschrittsbalken aktualisieren
-        function updateProgress() {
-            document.getElementById('progress-text').innerText = `${collectedVampsters} / ${totalVampsters}`;
-            const percentage = totalVampsters === 0 ? 0 : (collectedVampsters / totalVampsters) * 100;
-            document.getElementById('progress-bar').style.width = percentage + '%';
-        }
-
-        // Klick auf Kachel verarbeiten
-        function handleCardClick(event, id) {
-            if (event.target.tagName.toLowerCase() === 'input') {
-                event.target.checked = !event.target.checked;
-            }
-
-            const card = document.getElementById(`card-${id}`);
-            const checkbox = document.getElementById(`checkbox-${id}`);
-            
-            const isNowChecked = !checkbox.checked;
-            checkbox.checked = isNowChecked;
-
-            if (isNowChecked) {
-                localStorage.setItem(`vampster_${id}`, 'true');
-                card.classList.add('completed');
-                collectedVampsters++;
-            } else {
-                localStorage.removeItem(`vampster_${id}`);
-                card.classList.remove('completed');
-                collectedVampsters--;
-            }
-            
-            updateProgress();
-        }
-
-        // Baut das Grid auf (wird beim Laden und beim Sprachwechsel aufgerufen)
-        function renderTracker() {
-            const container = document.getElementById('tracker-container');
-            container.innerHTML = ''; 
-            
-            totalVampsters = 0;
-            collectedVampsters = 0;
-            
-            const uiStrings = translations[currentLang];
-
-            for (const [region, vampsters] of Object.entries(vampstersData)) {
-                const section = document.createElement('div');
-                section.className = 'region-section';
-                
-                const title = document.createElement('h2');
-                title.className = 'region-title';
-                title.innerText = region; 
-                section.appendChild(title);
-
-                const grid = document.createElement('div');
-                grid.className = 'grid';
-
-                vampsters.forEach((vampster) => {
-                    totalVampsters++;
-                    
-                    const uniqueId = vampster.id;
-                    const isCollected = localStorage.getItem(`vampster_${uniqueId}`) === 'true';
-                    
-                    if (isCollected) {
-                        collectedVampsters++;
-                    }
-
-                    const imageHtml = vampster.image_url 
-                        ? `<div class="image-container">
+                const imageHtml = vampster.image_url
+                    ? `<div class="image-container">
                                <img src="${vampster.image_url}" alt="Vampster" loading="lazy">
                                <div class="zoom-icon" onclick="openModal('${vampster.image_url}', event)" title="${uiStrings.zoom}">🔍</div>
-                           </div>` 
-                        : `<div class="no-image">${uiStrings.noImage}</div>`;
+                           </div>`
+                    : `<div class="no-image">${uiStrings.noImage}</div>`;
 
-                    const description = vampster.desc[currentLang];
+                const description = vampster.desc[currentLang];
 
-                    const cardHtml = `
+                const cardHtml = `
                         <div class="card ${isCollected ? 'completed' : ''}" id="card-${uniqueId}" onclick="handleCardClick(event, '${uniqueId}')">
                             ${imageHtml}
                             <div class="card-content">
@@ -608,28 +844,120 @@
                             </div>
                         </div>
                     `;
-                    
-                    grid.insertAdjacentHTML('beforeend', cardHtml);
-                });
 
-                section.appendChild(grid);
-                container.appendChild(section);
-            }
+                grid.insertAdjacentHTML('beforeend', cardHtml);
+            });
 
-            updateProgress();
+            section.appendChild(grid);
+            container.appendChild(section);
         }
 
-        // Init beim Start
-        window.onload = function() {
-            let savedLang = localStorage.getItem('vampster_lang');
-            
-            if (!savedLang) {
-                const browserLang = navigator.language.slice(0, 2); // Gibt z.B. "de" oder "en" zurück
-                savedLang = (browserLang === 'de') ? 'de' : 'en';
+        updateProgress();
+    }
+
+    // --- CUSTOM PINCH TO ZOOM & PAN FÜR DAS MODAL BILD ---
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+
+    let scale = 1;
+    let pointX = 0, pointY = 0;
+    let startX = 0, startY = 0;
+    let startDistance = 0;
+    let isPinching = false;
+    let isPanning = false;
+
+    function openModal(imgSrc, event) {
+        event.stopPropagation();
+        modalImg.src = imgSrc;
+        modal.classList.add('show');
+
+        // Reset Zoom/Pan Werte
+        scale = 1;
+        pointX = 0;
+        pointY = 0;
+        modalImg.style.transform = `translate(0px, 0px) scale(1)`;
+    }
+
+    function closeModal() {
+        modal.classList.remove('show');
+    }
+
+    // Touch-Start
+    modalImg.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+            isPinching = true;
+            isPanning = false;
+            startDistance = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+        } else if (e.touches.length === 1 && scale > 1) {
+            isPanning = true;
+            isPinching = false;
+            startX = e.touches[0].clientX - pointX;
+            startY = e.touches[0].clientY - pointY;
+        }
+    });
+
+    // Touch-Move (Zoom & Wischen)
+    modalImg.addEventListener('touchmove', (e) => {
+        if (isPinching && e.touches.length === 2) {
+            e.preventDefault(); // Verhindert mitscrollen der Seite
+            let currentDistance = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+
+            let distanceDiff = currentDistance - startDistance;
+            scale += distanceDiff * 0.01;
+
+            // Begrenze Zoom (1x bis 4x)
+            scale = Math.min(Math.max(1, scale), 4);
+            startDistance = currentDistance;
+
+            // Zentriere wieder, wenn komplett rausgezoomt
+            if (scale === 1) {
+                pointX = 0;
+                pointY = 0;
             }
-            
-            setLanguage(savedLang);
-        };
-    </script>
+
+            modalImg.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+
+        } else if (isPanning && e.touches.length === 1) {
+            e.preventDefault(); // Verhindert mitscrollen der Seite
+            pointX = e.touches[0].clientX - startX;
+            pointY = e.touches[0].clientY - startY;
+            modalImg.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+        }
+    }, {passive: false});
+
+    // Touch-End
+    modalImg.addEventListener('touchend', (e) => {
+        if (e.touches.length < 2) isPinching = false;
+        if (e.touches.length === 0) isPanning = false;
+
+        // Falls komisch gezoomt wurde, setze auf 1 zurück
+        if (scale < 1) {
+            scale = 1;
+            pointX = 0;
+            pointY = 0;
+            modalImg.style.transform = `translate(0px, 0px) scale(1)`;
+        }
+    });
+
+    // --- INIT BEIM START ---
+    window.onload = function () {
+        // Sprach-Erkennung
+        let savedLang = localStorage.getItem('vampster_lang');
+
+        // Wenn der Nutzer zum allerersten Mal auf der Seite ist, prüfe die Browser-Sprache
+        if (!savedLang) {
+            const browserLang = navigator.language.slice(0, 2); // Gibt z.B. "de" oder "en" zurück
+            savedLang = (browserLang === 'de') ? 'de' : 'en';
+        }
+
+        setLanguage(savedLang);
+    };
+</script>
 </body>
 </html>
