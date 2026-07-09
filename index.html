@@ -368,6 +368,58 @@
         .pop-animation {
             animation: card-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+
+        /* Custom Bat Cursor */
+        #cursor-container {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 100000;
+        }
+
+        @media (pointer: fine) {
+            * { cursor: none !important; }
+            #cursor-container {
+                display: block;
+            }
+        }
+
+        /* GPU Beschleunigung & Zentrierung */
+        .magic-crystal, .bat-container {
+            position: absolute;
+            top: 0; left: 0;
+            will-change: transform; 
+        }
+
+        .magic-crystal {
+            width: 32px;
+            height: 32px;
+            margin-top: -16px;
+            margin-left: -28px;
+            transform-origin: 28px 16px; 
+            filter: drop-shadow(0 0 6px rgba(176, 102, 254, 0.9));
+        }
+
+        .bat-container {
+            width: 40px;
+            height: 40px;
+            margin-top: -20px;
+            margin-left: -20px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+        }
+
+        .flying-bat {
+            width: 100%;
+            height: 100%;
+            animation: bobbing 2s ease-in-out infinite;
+            overflow: visible; 
+        }
+
+        @keyframes bobbing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
     </style>
 </head>
 <body>
@@ -396,6 +448,47 @@
 <div id="image-modal" class="modal" onclick="closeModal()">
     <span class="close-modal">&times;</span>
     <img class="modal-content" id="modal-img">
+</div>
+
+<div id="cursor-container">
+    <!-- Der Kristall -->
+    <svg class="magic-crystal" id="crystal" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 28 16 L 14 8 L 6 16 L 14 24 Z" fill="#B066FE" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M 24 16 L 12 11 L 8 16 L 12 21 Z" fill="#FFD700" opacity="0.8"/>
+    </svg>
+
+    <!-- Die Fledermaus -->
+    <div class="bat-container" id="bat">
+        <svg class="flying-bat" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            
+            <!-- Linker Flügel -->
+            <g transform="translate(12, 18)">
+                <g>
+                    <animateTransform attributeName="transform" type="rotate" values="30; -45; 30" dur="0.8s" repeatCount="indefinite" id="left-wing-anim" />
+                    <path d="M 0 0 C -8 -12, -18 -8, -22 -2 C -18 2, -12 1, -8 4 C -6 5, -3 8, 0 6 Z" fill="#2D1B4E" stroke="#B066FE" stroke-width="1" stroke-linejoin="round" />
+                </g>
+            </g>
+            
+            <!-- Rechter Flügel -->
+            <g transform="translate(20, 18)">
+                <g>
+                    <animateTransform attributeName="transform" type="rotate" values="-30; 45; -30" dur="0.8s" repeatCount="indefinite" id="right-wing-anim" />
+                    <path d="M 0 0 C 8 -12, 18 -8, 22 -2 C 18 2, 12 1, 8 4 C 6 5, 3 8, 0 6 Z" fill="#2D1B4E" stroke="#B066FE" stroke-width="1" stroke-linejoin="round" />
+                </g>
+            </g>
+
+            <!-- Körper & Ohren -->
+            <ellipse cx="16" cy="18" rx="7" ry="8" fill="#2D1B4E" stroke="#1A0F2E" stroke-width="1.5" />
+            <path d="M 12 11 L 8 4 L 14 9 Z" fill="#2D1B4E" stroke="#B066FE" stroke-width="1" stroke-linejoin="round"/>
+            <path d="M 20 11 L 24 4 L 18 9 Z" fill="#2D1B4E" stroke="#B066FE" stroke-width="1" stroke-linejoin="round"/>
+            
+            <!-- Augen & Zähne -->
+            <ellipse cx="13" cy="17" rx="1.5" ry="2.5" fill="#FFD700"><animate attributeName="ry" values="2.5; 0.2; 2.5; 2.5" keyTimes="0; 0.05; 0.1; 1" dur="4s" repeatCount="indefinite"/></ellipse>
+            <ellipse cx="19" cy="17" rx="1.5" ry="2.5" fill="#FFD700"><animate attributeName="ry" values="2.5; 0.2; 2.5; 2.5" keyTimes="0; 0.05; 0.1; 1" dur="4s" repeatCount="indefinite"/></ellipse>
+            <path d="M 14.5 21 L 15 23 L 15.5 21 Z" fill="#FFFFFF" />
+            <path d="M 16.5 21 L 17 23 L 17.5 21 Z" fill="#FFFFFF" />
+        </svg>
+    </div>
 </div>
 
 <footer>
@@ -1078,6 +1171,82 @@
         }
         setLanguage(savedLang);
     };
+
+    // --- CUSTOM BAT CURSOR ANIMATION ---
+    if (window.matchMedia('(pointer: fine)').matches) {
+        const crystal = document.getElementById('crystal');
+        const bat = document.getElementById('bat');
+        const leftWingAnim = document.getElementById('left-wing-anim');
+        const rightWingAnim = document.getElementById('right-wing-anim');
+        
+        let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        let cPos = { x: mouse.x, y: mouse.y, angle: 0 }; 
+        let bPos = { x: mouse.x, y: mouse.y, scaleX: 1 }; 
+
+        const lerp = (start, end, factor) => start + (end - start) * factor;
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function animateCursor() {
+            const oldCX = cPos.x;
+            const oldCY = cPos.y;
+            const oldBX = bPos.x;
+            const oldBY = bPos.y;
+
+            cPos.x = lerp(cPos.x, mouse.x, 0.5);
+            cPos.y = lerp(cPos.y, mouse.y, 0.5);
+
+            const vx = cPos.x - oldCX;
+            const vy = cPos.y - oldCY;
+            const speed = Math.sqrt(vx * vx + vy * vy);
+
+            if (speed > 0.5) {
+                let targetAngle = Math.atan2(vy, vx);
+                let deltaAngle = targetAngle - cPos.angle;
+                while (deltaAngle > Math.PI) deltaAngle -= Math.PI * 2;
+                while (deltaAngle < -Math.PI) deltaAngle += Math.PI * 2;
+                cPos.angle += deltaAngle * 0.3;
+            }
+
+            crystal.style.transform = `translate3d(${cPos.x}px, ${cPos.y}px, 0) rotate(${cPos.angle}rad)`;
+
+            const targetDistance = Math.min(40 + speed * 2, 120);
+            const targetBatX = cPos.x - Math.cos(cPos.angle) * targetDistance;
+            const targetBatY = cPos.y - Math.sin(cPos.angle) * targetDistance;
+
+            bPos.x = lerp(bPos.x, targetBatX, 0.1);
+            bPos.y = lerp(bPos.y, targetBatY, 0.1);
+
+            if (Math.abs(Math.cos(cPos.angle)) > 0.1) {
+                bPos.scaleX = Math.cos(cPos.angle) > 0 ? 1 : -1;
+            }
+
+            bat.style.transform = `translate3d(${bPos.x}px, ${bPos.y}px, 0) scaleX(${bPos.scaleX})`;
+
+            // Flattern-Geschwindigkeit der Flügel dynamisch steuern
+            const batVx = bPos.x - oldBX;
+            const batVy = bPos.y - oldBY;
+            const batSpeed = Math.sqrt(batVx * batVx + batVy * batVy);
+
+            let newDur = "0.8s"; // Langsames Flattern im Stand
+            if (batSpeed > 0.3) {
+                newDur = "0.15s"; // Schnelles Flattern bei Bewegung
+            }
+
+            // Nur updaten, wenn sich der Wert geändert hat, um Render-Ruckler zu vermeiden
+            if (leftWingAnim && rightWingAnim && leftWingAnim.getAttribute('dur') !== newDur) {
+                leftWingAnim.setAttribute('dur', newDur);
+                rightWingAnim.setAttribute('dur', newDur);
+            }
+
+            requestAnimationFrame(animateCursor);
+        }
+
+        animateCursor();
+    }
 </script>
 </body>
 </html>
