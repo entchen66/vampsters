@@ -2,7 +2,6 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <!-- WICHTIG FÜR MOBILE: Sperrt den Zoom der gesamten Seite und erzwingt korrekte Breite -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Moonlight Peaks - Vampster Tracker</title>
@@ -27,7 +26,6 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            /* Verhindert Pull-to-Refresh auf mobilen Browsern */
             overscroll-behavior-y: none;
         }
 
@@ -58,7 +56,6 @@
             gap: 10px;
         }
 
-
         .lang-btn {
             background-color: var(--card-bg);
             color: var(--text-color);
@@ -68,7 +65,6 @@
             cursor: pointer;
             font-weight: bold;
             transition: all 0.2s;
-            /* Verhindert den 300ms Delay beim Tippen auf Handys */
             touch-action: manipulation;
         }
 
@@ -161,11 +157,9 @@
             cursor: pointer;
             border: 2px solid transparent;
             touch-action: manipulation;
-            /* Verhindert blaue Auswahlmarkierung auf mobilen Geräten */
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Hover-Effekt nur für Geräte mit Maus */
         @media (hover: hover) {
             .card:hover {
                 transform: translateY(-5px);
@@ -210,10 +204,13 @@
             border-radius: 6px;
             font-size: 16px;
             cursor: pointer;
-
             z-index: 10;
         }
 
+        .zoom-icon:hover {
+            background-color: var(--accent-color);
+            transform: scale(1.1);
+        }
 
         .card-content {
             padding: 15px;
@@ -270,7 +267,8 @@
             align-items: center;
             opacity: 0;
             transition: opacity 0.3s ease;
-            overflow: hidden; /* Wichtig fürs Panning */
+            overflow: hidden;
+            cursor: pointer; /* Zeigt an, dass man überall klicken kann, um zu schließen */
         }
 
         .modal.show {
@@ -279,13 +277,13 @@
         }
 
         .modal-content {
-            max-width: 100%;
-            max-height: 100vh;
+            max-width: 90%;
+            max-height: 90vh;
             border-radius: 4px;
-            /* Vorbereitung für JS Zoom/Pan */
             will-change: transform;
             transform-origin: center center;
             transition: transform 0.1s ease-out;
+            cursor: pointer;
         }
 
         .close-modal {
@@ -297,8 +295,6 @@
             font-weight: bold;
             cursor: pointer;
             z-index: 10000;
-
-
         }
 
         /* Footer / Credits */
@@ -312,7 +308,6 @@
         footer a {
             color: var(--accent-color);
             text-decoration: none;
-
         }
 
         /* MOBILE ANPASSUNGEN */
@@ -341,6 +336,10 @@
                 padding: 10px;
                 top: 5px;
             }
+
+            .modal-content {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
@@ -364,14 +363,12 @@
 <!-- Info-Box -->
 <div class="wip-notice" id="wip-notice"></div>
 
-
 <div class="main-content" id="tracker-container"></div>
 
-<!-- Modal schließt sich bei Klick auf den Hintergrund -->
+<!-- Modal schließt sich nun bei Klick *irgendwo*, auch direkt auf das Bild -->
 <div id="image-modal" class="modal" onclick="closeModal()">
     <span class="close-modal">&times;</span>
-    <!-- onclick=stopPropagation verhindert das Schließen, wenn man auf das Bild selbst tippt -->
-    <img class="modal-content" id="modal-img" onclick="event.stopPropagation()">
+    <img class="modal-content" id="modal-img">
 </div>
 
 <footer>
@@ -411,8 +408,6 @@
     // ==========================================
     const vampstersData = {
         "Cave Of Echoes": [
-
-
             {
                 "id": "vamp_coe_01",
                 "desc": {
@@ -421,18 +416,11 @@
                 },
                 "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-13_38_10.png"
             },
-
-
             {
                 "id": "vamp_coe_02",
-                "desc": {
-                    "de": "Nimm den Pfad links vom Vampster-Zuhause, um diesen hier in der Mitte zu finden.",
-                    "en": "Take the path left of the Vampster home to find this one in the center."
-                },
+                "desc": {"de": "Nimm den Pfad links vom Vampster-Zuhause, um diesen hier in der Mitte zu finden.", "en": "Take the path left of the Vampster home to find this one in the center."},
                 "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-13_39_00.png"
             },
-
-
             {
                 "id": "vamp_coe_03",
                 "desc": {
@@ -441,8 +429,6 @@
                 },
                 "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-13_40_06.png"
             },
-
-
             {
                 "id": "vamp_coe_04",
                 "desc": {
@@ -459,8 +445,6 @@
                 },
                 "image_url": "https://static0.thegamerimages.com/wordpress/wp-content/uploads/wm/2026/07/moonlight-peaks-02_07_2026-13_48_27.png"
             }
-
-
         ],
         "Town": [
             {
@@ -757,7 +741,6 @@
         renderTracker();
     }
 
-
     // --- FORTSCHRITT ---
     function updateProgress() {
         document.getElementById('progress-text').innerText = `${collectedVampsters} / ${totalVampsters}`;
@@ -767,7 +750,6 @@
 
     // --- KARTEN-KLICK ---
     function handleCardClick(event, id) {
-        // Verhindert, dass Checkbox doppelt getoggelt wird
         if (event.target.tagName.toLowerCase() === 'input') {
             event.target.checked = !event.target.checked;
         }
@@ -902,7 +884,7 @@
     // Touch-Move (Zoom & Wischen)
     modalImg.addEventListener('touchmove', (e) => {
         if (isPinching && e.touches.length === 2) {
-            e.preventDefault(); // Verhindert mitscrollen der Seite
+            e.preventDefault();
             let currentDistance = Math.hypot(
                 e.touches[0].clientX - e.touches[1].clientX,
                 e.touches[0].clientY - e.touches[1].clientY
@@ -911,11 +893,9 @@
             let distanceDiff = currentDistance - startDistance;
             scale += distanceDiff * 0.01;
 
-            // Begrenze Zoom (1x bis 4x)
             scale = Math.min(Math.max(1, scale), 4);
             startDistance = currentDistance;
 
-            // Zentriere wieder, wenn komplett rausgezoomt
             if (scale === 1) {
                 pointX = 0;
                 pointY = 0;
@@ -924,7 +904,7 @@
             modalImg.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
 
         } else if (isPanning && e.touches.length === 1) {
-            e.preventDefault(); // Verhindert mitscrollen der Seite
+            e.preventDefault();
             pointX = e.touches[0].clientX - startX;
             pointY = e.touches[0].clientY - startY;
             modalImg.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
@@ -936,7 +916,6 @@
         if (e.touches.length < 2) isPinching = false;
         if (e.touches.length === 0) isPanning = false;
 
-        // Falls komisch gezoomt wurde, setze auf 1 zurück
         if (scale < 1) {
             scale = 1;
             pointX = 0;
@@ -947,15 +926,11 @@
 
     // --- INIT BEIM START ---
     window.onload = function () {
-        // Sprach-Erkennung
         let savedLang = localStorage.getItem('vampster_lang');
-
-        // Wenn der Nutzer zum allerersten Mal auf der Seite ist, prüfe die Browser-Sprache
         if (!savedLang) {
-            const browserLang = navigator.language.slice(0, 2); // Gibt z.B. "de" oder "en" zurück
+            const browserLang = navigator.language.slice(0, 2);
             savedLang = (browserLang === 'de') ? 'de' : 'en';
         }
-
         setLanguage(savedLang);
     };
 </script>
