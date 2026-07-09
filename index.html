@@ -621,7 +621,13 @@
 
         // Init beim Start
         window.onload = function() {
-            const savedLang = localStorage.getItem('vampster_lang') || 'de';
+            let savedLang = localStorage.getItem('vampster_lang');
+            
+            if (!savedLang) {
+                const browserLang = navigator.language.slice(0, 2); // Gibt z.B. "de" oder "en" zurück
+                savedLang = (browserLang === 'de') ? 'de' : 'en';
+            }
+            
             setLanguage(savedLang);
         };
     </script>
