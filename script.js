@@ -8,7 +8,7 @@ const translations = {
         collected: "Gesammelt",
         noImage: "Kein Bild vorhanden",
         zoom: "Bild vergrößern",
-        credits: "Informationen & Bilder stammen von",
+        credits: "Informationen & Bilder stammen teilweise von",
         creditsCompany: "Alle Rechte der verwendeten Icons der Vampster liegen bei <strong>Little Chicken Game Company</strong>, dem Entwickler von Moonlight Peaks.",
         wip: "🎉 <strong>Erfolg:</strong> Alle 100 Vampster des Spiels sind jetzt in der Datenbank registriert! Nicht gefundene Fundorte zeigen ein Platzhalter-Bild. Wenn du einen fehlenden Screenshot hast, sende ihn mir gerne per Discord an meinen Account: <strong>foxyfire</strong> (ID: <code>1524903125264240802</code>).",
         regions: {
@@ -32,7 +32,7 @@ const translations = {
         collected: "Collected",
         noImage: "No image available",
         zoom: "Zoom image",
-        credits: "Information & images sourced from",
+        credits: "Information & images partly sourced from",
         creditsCompany: "All rights of the used Vampster icons belong to <strong>Little Chicken Game Company</strong>, the developer of Moonlight Peaks.",
         wip: "🎉 <strong>Success:</strong> All 100 Vampsters in the game are now registered in the database! Missing locations show a placeholder icon. If you have a missing screenshot, feel free to send it to me via Discord private message to my account: <strong>foxyfire</strong> (ID: <code>1524903125264240802</code>).",
         regions: {
