@@ -639,7 +639,22 @@ let isPanning = false;
 
 function openModal(imgSrc, event) {
     event.stopPropagation();
+
+    // Entferne die loaded-Klasse sofort, damit das alte Bild unsichtbar wird
+    modalImg.classList.remove('loaded');
+
+    // Sobald das neue Bild geladen ist, blenden wir es ein
+    modalImg.onload = function () {
+        modalImg.classList.add('loaded');
+    };
+    
     modalImg.src = imgSrc;
+
+    // Sicherheits-Check, falls das Bild bereits im Browser-Cache ist und onload nicht feuert
+    if (modalImg.complete) {
+        modalImg.classList.add('loaded');
+    }
+    
     modal.classList.add('show');
 
     // Reset Zoom/Pan Werte
@@ -651,6 +666,11 @@ function openModal(imgSrc, event) {
 
 function closeModal() {
     modal.classList.remove('show');
+    // Nach dem Ausblenden des Modals das Bild zurücksetzen
+    setTimeout(() => {
+        modalImg.src = '';
+        modalImg.classList.remove('loaded');
+    }, 300); // Entspricht der Transition-Zeit des Modals (0.3s)
 }
 
 // Touch-Start
@@ -726,20 +746,54 @@ window.onload = function () {
     }
     setLanguage(savedLang);
 
-    // 3. Magische Hintergrund-Partikel erzeugen
+    // 3. Magische Hintergrund-Partikel erzeugen (Sterne und Orbs)
     const particleContainer = document.getElementById('magic-bg-particles');
-    const particleColors = ['rgba(138, 43, 226, 0.3)', 'rgba(255, 71, 87, 0.2)', 'rgba(177, 94, 255, 0.25)', 'rgba(255, 121, 255, 0.15)', 'rgba(88, 28, 135, 0.3)'];
-    for (let i = 0; i < 25; i++) {
+    const shapes = [
+        // 4-zackiger gotischer Funkelstern
+        `M12 0 C12 8 16 12 24 12 C16 12 12 16 12 24 C12 16 8 12 0 12 C8 12 12 8 12 0 Z`,
+        // Klassischer spitzer Stern
+        `M12 0 L15 9 L24 12 L15 15 L12 24 L9 15 L0 12 L9 9 Z`,
+        // Kreis/Orb
+        `circle`
+    ];
+    const particleColors = [
+        '#ff4757', // Rötlich (Akzent)
+        '#ff79ff', // Hellpink
+        '#b15eff', // Neon-Lila
+        '#a55eea', // Violett
+        '#f368e0'  // Magisches Pink
+    ];
+    const flightPaths = ['floatDriftLeft', 'floatDriftRight', 'floatWander', 'floatSpiral'];
+
+    for (let i = 0; i < 18; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
-        const size = Math.random() * 4 + 2;
+        const size = Math.random() * 14 + 14; // 14px bis 28px (größer & besser sichtbar)
         p.style.width = size + 'px';
         p.style.height = size + 'px';
+
+        // Zufällige Position über die gesamte Seite verteilt
         p.style.left = Math.random() * 100 + '%';
-        p.style.backgroundColor = particleColors[Math.floor(Math.random() * particleColors.length)];
-        p.style.boxShadow = `0 0 ${size * 3}px ${p.style.backgroundColor}`;
-        p.style.animationDuration = (Math.random() * 15 + 10) + 's';
-        p.style.animationDelay = (Math.random() * 15) + 's';
+        p.style.top = (Math.random() * 100) + '%'; // Nicht nur unten starten
+
+        const color = particleColors[Math.floor(Math.random() * particleColors.length)];
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+
+        if (shape === 'circle') {
+            p.innerHTML = `<svg viewBox="0 0 24 24" width="100%" height="100%"><circle cx="12" cy="12" r="8" fill="${color}" /></svg>`;
+        } else {
+            p.innerHTML = `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="${shape}" fill="${color}" /></svg>`;
+        }
+
+        // Stärkerer Glow – wie bei den Sparkle-Partikeln
+        p.style.filter = `drop-shadow(0 0 4px ${color}) drop-shadow(0 0 10px ${color})`;
+
+        // Zufälligen Flugpfad zuweisen
+        const path = flightPaths[Math.floor(Math.random() * flightPaths.length)];
+        const duration = (Math.random() * 30 + 25); // 25s bis 55s – sehr langsam und magisch
+        p.style.animation = `${path} ${duration}s linear infinite`;
+        p.style.animationDelay = (Math.random() * 30) + 's'; // Gut verteilt über die Zeit
+        
         particleContainer.appendChild(p);
     }
 };
@@ -786,26 +840,12 @@ if (window.matchMedia('(pointer: fine)').matches) {
         const oldBX = bPos.x;
         const oldBY = bPos.y;
 
-        // Ziel-Position bestimmen (Maus oder Ruheposition)
+        // Ziel-Position: Immer die letzte bekannte Mausposition
         let targetX = mouse.x;
         let targetY = mouse.y;
 
-        if (!mouseOnScreen) {
-            // Ruheposition: Direkt rechts neben der Fortschritts-Anzeige
-            const progressText = document.getElementById('progress-text');
-            if (progressText) {
-                const rect = progressText.getBoundingClientRect();
-                targetX = rect.right + 25; // Platziert den Kristall rechts neben die Zahlen
-                targetY = rect.top + rect.height / 2;
-            } else {
-                // Fallback (z.B. oben rechts)
-                targetX = window.innerWidth - 80;
-                targetY = 60;
-            }
-        }
-
-        // Weicheres Hingleiten zur Ruheposition
-        const lerpFactor = mouseOnScreen ? 0.35 : 0.05;
+        // Weicheres Hingleiten
+        const lerpFactor = 0.35;
         cPos.x = lerp(cPos.x, targetX, lerpFactor);
         cPos.y = lerp(cPos.y, targetY, lerpFactor);
 
