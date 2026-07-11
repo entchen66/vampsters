@@ -175,8 +175,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 4/14 in Moonlit Pines",
         "oldId": null,
         "desc": {
-            "de": "Auf dem Weg richtung den Ruinen im Norden, vor der Weggabelung unten im Wald.",
-            "en": "On the path towards the ruins in the north, before the trail junction down in the forest."
+            "de": null,
+            "en": null
         }
     },
     {
@@ -311,12 +311,12 @@ const VAMPSTERS_DATA = [
         "totalInRegion": 14,
         "regionDE": "Mondscheinwald",
         "regionEN": "Moonlit Pines",
-        "almanacTextDE": "Vampster 8/14 in Mondscheinwald",
-        "almanacTextEN": "Vampster 8/14 in Moonlit Pines",
+        "almanacTextDE": "Vampster 6/14 in Mondscheinwald",
+        "almanacTextEN": "Vampster 6/14 in Moonlit Pines",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Auf dem Weg richtung den Ruinen im Norden, vor der Weggabelung unten im Wald.",
+            "en": "On the path towards the ruins in the north, before the trail junction down in the forest."
         }
     },
     {
@@ -391,8 +391,8 @@ const VAMPSTERS_DATA = [
         "totalInRegion": 14,
         "regionDE": "Mondscheinwald",
         "regionEN": "Moonlit Pines",
-        "almanacTextDE": "Vampster 6/14 in Mondscheinwald",
-        "almanacTextEN": "Vampster 6/14 in Moonlit Pines",
+        "almanacTextDE": "Vampster 8/14 in Mondscheinwald",
+        "almanacTextEN": "Vampster 8/14 in Moonlit Pines",
         "oldId": null,
         "desc": {
             "de": null,
