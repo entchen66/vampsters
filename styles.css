@@ -1,0 +1,772 @@
+:root {
+    --bg-color: #0d0d18;
+    --card-bg: #1c1a2e;
+    --text-color: #e0e0e0;
+    --accent-color: #ff4757;
+    --accent-hover: #ff6b81;
+    --completed-bg: #14121f;
+    --completed-text: #888;
+    --warning-color: #ffb142;
+    --glow-purple: rgba(138, 43, 226, 0.4);
+    --glow-pink: rgba(255, 71, 87, 0.3);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overscroll-behavior-y: none;
+    background-image: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(88, 28, 135, 0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 30%, rgba(157, 23, 77, 0.2) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 40% at 50% 90%, rgba(67, 20, 128, 0.2) 0%, transparent 50%);
+    background-attachment: fixed;
+}
+
+/* Magische schwebende Partikel im Hintergrund */
+.magic-bg-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.magic-bg-particles .particle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0;
+    animation: floatParticle linear infinite;
+}
+
+@keyframes floatParticle {
+    0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-10vh) scale(1);
+        opacity: 0;
+    }
+}
+
+/* Alles über den Partikeln */
+.header-container, .progress-container, .main-content, footer, #cursor-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Header und Sprachauswahl */
+.header-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+h1 {
+    font-family: 'Berkshire Swash', cursive;
+    text-align: center;
+    margin: 0;
+    padding: 10px 10px 15px 10px;
+    font-size: 38px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #ff4757 0%, #ff79ff 40%, #b15eff 70%, #ff4757 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: headingShimmer 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 15px rgba(177, 94, 255, 0.6)) drop-shadow(0 0 30px rgba(255, 71, 87, 0.5));
+}
+
+@keyframes headingShimmer {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.lang-switcher {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+.lang-btn {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+    padding: 6px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+    touch-action: manipulation;
+}
+
+.lang-btn.active {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+}
+
+/* Fortschrittsanzeige */
+.progress-container {
+    max-width: 600px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto 25px auto;
+    position: sticky;
+    top: 15px;
+    z-index: 100;
+}
+
+.progress-bar-bg {
+    background-color: rgba(28, 26, 46, 0.75);
+    border-radius: 30px;
+    height: 42px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #ff79ff;
+    box-shadow: 0 0 15px rgba(255, 121, 255, 0.5), inset 0 0 10px rgba(255, 121, 255, 0.3);
+    backdrop-filter: blur(8px);
+}
+
+.progress-bar-fill {
+    background: linear-gradient(90deg, #b15eff 0%, #ff79ff 100%);
+    background-size: 200% 100%;
+    height: 100%;
+    width: 0%;
+    border-radius: 30px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: progressShimmer 3s ease-in-out infinite;
+    box-shadow: 0 0 20px rgba(255, 121, 255, 0.6);
+    position: relative;
+    z-index: 1;
+}
+
+.progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: progressGlint 2s ease-in-out infinite;
+    border-radius: 30px;
+}
+
+.progress-text-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9), 0 0 5px rgba(0, 0, 0, 0.8);
+    z-index: 2;
+    pointer-events: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+@keyframes progressShimmer {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes progressGlint {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+
+/* Regionen und Grid */
+.main-content {
+    flex-grow: 1;
+}
+
+.region-section {
+    margin-bottom: 40px;
+}
+
+.region-title {
+    font-family: 'Berkshire Swash', cursive;
+    border-bottom: 2px solid rgba(255, 121, 255, 0.4);
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    display: inline-block;
+    color: #fff;
+    font-size: 26px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.3s, text-shadow 0.3s, border-color 0.3s;
+    text-shadow: 0 0 15px rgba(255, 121, 255, 0.5);
+}
+
+.region-title:hover {
+    color: var(--accent-hover);
+    text-shadow: 0 0 15px rgba(255, 107, 129, 0.5);
+    border-color: var(--accent-hover);
+}
+
+.region-title::after {
+    content: ' ▾';
+    font-size: 16px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+    transform-origin: center center;
+}
+
+.region-title.collapsed::after {
+    transform: rotate(-90deg);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 15px;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, transform 0.5s ease, gap 0.5s ease, padding 0.5s ease;
+    max-height: 2500px;
+    opacity: 1;
+    overflow: hidden;
+    padding-top: 10px; /* Pufferbereich, damit gehoverte Kacheln (translateY) oben nicht abgeschnitten werden */
+}
+
+.grid.collapsed {
+    max-height: 0px !important;
+    opacity: 0;
+    transform: scaleY(0.95);
+    pointer-events: none;
+    gap: 0px;
+    padding-top: 0px;
+}
+
+/* Einzelne Karten */
+.card {
+    background: linear-gradient(160deg, rgba(28, 26, 46, 1) 0%, rgba(35, 25, 55, 1) 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 20px rgba(138, 43, 226, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    border: 2px solid #ff79ff;
+    box-shadow: 0 0 12px rgba(255, 121, 255, 0.5), inset 0 0 8px rgba(255, 121, 255, 0.2);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+}
+
+/* Schimmernder Rand-Glow auf Karten */
+.card::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 13px;
+    background: linear-gradient(135deg, rgba(255, 71, 87, 0.2) 0%, rgba(177, 94, 255, 0.2) 50%, rgba(255, 121, 255, 0.15) 100%);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    filter: blur(4px);
+}
+
+@media (hover: hover) {
+    .card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(177, 94, 255, 0.5);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 30px rgba(138, 43, 226, 0.2), 0 0 60px rgba(255, 71, 87, 0.1);
+    }
+
+    .card:hover::before {
+        opacity: 1;
+    }
+}
+
+.card.completed {
+    background: var(--completed-bg);
+    opacity: 0.5;
+    border: 2px solid rgba(80, 80, 100, 0.15);
+    box-shadow: none;
+}
+
+.card.completed::before {
+    display: none;
+}
+
+.card.completed .card-img {
+    filter: grayscale(100%);
+}
+
+.card.completed p {
+    color: var(--completed-text);
+    text-decoration: line-through;
+}
+
+.image-container {
+    position: relative;
+}
+
+.card .card-img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Weicher Schattenübergang unter dem Bild statt schwarzem Strich */
+.image-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+    z-index: 2;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.card.completed .image-container::after {
+    opacity: 0.15;
+}
+
+.zoom-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.zoom-icon:hover {
+    background-color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+.card-content {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+}
+
+.card-content > *:not(.vampster-card-icon) {
+    position: relative;
+    z-index: 3;
+}
+
+.card p {
+    font-size: 15px;
+    line-height: 1.4;
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    color: var(--accent-color);
+    pointer-events: none;
+}
+
+.checkbox-container input {
+    width: 22px;
+    height: 22px;
+    margin-right: 10px;
+    accent-color: var(--accent-color);
+}
+
+.no-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+    background-color: #111;
+    color: #555;
+    font-style: italic;
+    border-bottom: 2px solid #111;
+}
+
+/* Modal (Lightbox) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    overflow: hidden;
+    cursor: pointer; /* Zeigt an, dass man überall klicken kann, um zu schließen */
+}
+
+.modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    max-width: 90%;
+    max-height: 90vh;
+    border-radius: 4px;
+    will-change: transform;
+    transform-origin: center center;
+    transition: transform 0.1s ease-out;
+    cursor: pointer;
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+}
+
+/* Footer / Credits */
+footer {
+    text-align: center;
+    padding: 30px 0 10px 0;
+    font-size: 13px;
+    color: #888;
+}
+
+footer a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+/* MOBILE ANPASSUNGEN */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .header-container {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .lang-switcher {
+        position: relative;
+        transform: none;
+        justify-content: center;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .progress-container {
+        padding: 10px;
+        top: 5px;
+    }
+
+    .modal-content {
+        max-width: 100%;
+    }
+}
+
+/* Sparkle Particle styles */
+.sparkle-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10000;
+    will-change: transform, opacity;
+    mix-blend-mode: screen;
+}
+
+/* Card pop animation */
+@keyframes card-pop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.03);
+        box-shadow: 0 0 20px #ff4757, 0 0 30px #b15eff;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pop-animation {
+    animation: card-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Custom Bat Cursor */
+#cursor-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 100000;
+}
+
+@media (pointer: fine) {
+    * {
+        cursor: none !important;
+    }
+
+    #cursor-container {
+        display: block;
+    }
+}
+
+/* GPU Beschleunigung & Zentrierung */
+.magic-crystal, .bat-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+}
+
+.magic-crystal {
+    width: 32px;
+    height: 32px;
+    margin-top: -16px;
+    margin-left: -28px;
+    transform-origin: 28px 16px;
+    filter: drop-shadow(0 0 6px rgba(176, 102, 254, 0.9));
+}
+
+.bat-container {
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+    margin-left: -20px;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
+}
+
+.flying-bat {
+    width: 100%;
+    height: 100%;
+    animation: bobbing 2s ease-in-out infinite;
+    overflow: visible;
+}
+
+@keyframes bobbing {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+/* Dummy Kachel Styling (wenn kein Screenshot vorhanden ist) */
+.card.is-dummy .image-container {
+    background: linear-gradient(135deg, #1b1625 0%, #2a1b4e 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px; /* Einheitliche Höhe wie Screenshots */
+    position: relative;
+}
+
+/* Dynamischer Schatten unter der Fledermaus auf Dummy-Karten */
+.card.is-dummy .image-container::before {
+    content: '';
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 55px;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 50%;
+    filter: blur(4px);
+    z-index: 1;
+    pointer-events: none;
+    transition: transform 0.3s ease, background-color 0.3s ease, filter 0.3s ease;
+}
+
+.card.is-dummy .card-img {
+    object-fit: contain;
+    width: auto;
+    height: 90px; /* Passt perfekt in den 150px Container */
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    z-index: 2;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    display: block !important; /* Sicherstellen, dass das Fallback-Bild geladen wird */
+}
+
+/* Schwebender Hover-Effekt: Vampster steigt auf, Schatten schrumpft & verblasst */
+.card.is-dummy:hover .card-img {
+    transform: translateY(-8px) scale(1.06);
+    filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.55));
+}
+
+.card.is-dummy:hover .image-container::before {
+    transform: translateX(-50%) scaleX(0.75) scaleY(0.6);
+    background: rgba(0, 0, 0, 0.25);
+    filter: blur(5px);
+}
+
+/* Verhindert den Edge-Schatten bei Dummy-Karten */
+.card.is-dummy .image-container::after {
+    display: none;
+}
+
+.card.is-dummy .zoom-icon {
+    display: none;
+}
+
+.dummy-badge {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(220, 53, 69, 0.9);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    pointer-events: none;
+    z-index: 3;
+}
+
+.card.is-dummy .dummy-badge {
+    display: block;
+}
+
+/* Vampster-Icon als deckendes Bildelement unten rechts */
+.vampster-card-icon {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    opacity: 1.0; /* Vollständig deckend - keine Transparenz! */
+    pointer-events: none;
+    z-index: 3; /* Vor dem Hintergrund */
+    transform: scale(1.5); /* Kompensiert den transparenten Rand in den Spieldateien */
+    transform-origin: bottom right;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Schwebender Pop-Effekt beim Hovern */
+.card:hover .vampster-card-icon {
+    transform: scale(1.65) rotate(5deg);
+}
+
+.card.completed .vampster-card-icon {
+    filter: grayscale(100%);
+    opacity: 0.55; /* Leicht verblasst im abgeschlossenen Zustand */
+}
+
+/* Name des Vampsters (passend zum Rot/Lila Design als bunter Sparkle-Verlauf) */
+.vampster-name {
+    font-family: 'Berkshire Swash', cursive;
+    margin: 0 0 5px 0;
+    font-size: 21px;
+    font-weight: normal;
+    background: linear-gradient(135deg, #ff4757 0%, #ff79ff 50%, #b15eff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: filter 0.3s ease;
+}
+
+.card:hover .vampster-name {
+    filter: drop-shadow(0 0 5px rgba(255, 121, 255, 0.7)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.card.completed .vampster-name {
+    background: linear-gradient(135deg, #777 0%, #999 50%, #888 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: none;
+}
+
+/* Buch-Eintrag / Almanac-Text */
+.vampster-almanac-text {
+    font-size: 13px;
+    color: #b066fe; /* Zarter Lila-Ton, passend zum Kristall */
+    font-style: italic;
+    margin-top: -3px;
+    margin-bottom: 8px;
+    opacity: 0.85;
+    font-weight: 500;
+}
+
+.card.completed .vampster-almanac-text {
+    color: var(--completed-text);
+    text-decoration: line-through;
+    opacity: 0.6;
+}
