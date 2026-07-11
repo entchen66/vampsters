@@ -312,6 +312,20 @@ function toggleRegion(regionId) {
     }
 }
 
+// --- HILFSFUNKTION FÜR SPARKLE-SVG ---
+function applySparkleShape(particle, colors, shapes, shadowBlur) {
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    particle.style.filter = `drop-shadow(0 0 3px ${color}) drop-shadow(0 0 ${shadowBlur}px ${color})`;
+    particle.style.opacity = '0.95';
+
+    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+    if (shape === 'circle') {
+        particle.innerHTML = `<svg viewBox="0 0 24 24" width="100%" height="100%"><circle cx="12" cy="12" r="8" fill="${color}" /></svg>`;
+    } else {
+        particle.innerHTML = `<svg viewBox="0 0 24 24" width="100%" height="100%"><path fill="${color}" d="${shape}" /></svg>`;
+    }
+}
+
 // --- MASSIVER SPARKLE EFFEKT (Completion Celebration) ---
 function createMassiveSparkleBurst(x, y) {
     const particleCount = 80; // Deutlich mehr Partikel für eine magische Feier
@@ -334,18 +348,7 @@ function createMassiveSparkleBurst(x, y) {
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
 
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        particle.style.filter = `drop-shadow(0 0 3px ${color}) drop-shadow(0 0 10px ${color})`;
-        particle.style.opacity = '0.95';
-
-        const shapeIndex = Math.floor(Math.random() * shapes.length);
-        const shape = shapes[shapeIndex];
-
-        if (shape === 'circle') {
-            particle.innerHTML = `<svg viewBox="0 0 24 24" width="100%" height="100%"><circle cx="12" cy="12" r="8" fill="${color}" /></svg>`;
-        } else {
-            particle.innerHTML = `<svg viewBox="0 0 24 24" width="100%" height="100%"><path fill="${color}" d="${shape}" /></svg>`;
-        }
+        applySparkleShape(particle, colors, shapes, 10);
 
         particle.style.left = `${x - size / 2}px`;
         particle.style.top = `${y - size / 2}px`;
@@ -427,20 +430,7 @@ function createSparkleBurst(x, y) {
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
 
-        const color = colors[Math.floor(Math.random() * colors.length)];
-
-        // Intensiver doppelter Leuchteffekt für den magischen Glow
-        particle.style.filter = `drop-shadow(0 0 3px ${color}) drop-shadow(0 0 8px ${color})`;
-        particle.style.opacity = '0.95';
-
-        const shapeIndex = Math.floor(Math.random() * shapes.length);
-        const shape = shapes[shapeIndex];
-
-        if (shape === 'circle') {
-            particle.innerHTML = `<svg viewBox="0 0 24 24" width="100%" height="100%"><circle cx="12" cy="12" r="8" fill="${color}" /></svg>`;
-        } else {
-            particle.innerHTML = `<svg viewBox="0 0 24 24" width="100%" height="100%"><path fill="${color}" d="${shape}" /></svg>`;
-        }
+        applySparkleShape(particle, colors, shapes, 8);
 
         // Startpunkt am Klick-Ort zentrieren
         particle.style.left = `${x - size / 2}px`;
@@ -587,11 +577,11 @@ function renderTracker() {
             const almanacText = currentLang === 'de' ? vampster.almanacTextDE : vampster.almanacTextEN;
 
             const cardHtml = `
-                        <div class="card ${isCollected ? 'completed' : ''}" id="card-${uniqueId}" data-region="${region}" onclick="handleCardClick(event, '${uniqueId}')">
+                        <div class="card ${isCollected ? 'completed' : ''}" id="card-${uniqueId}" data-region="${region}" onclick="handleCardClick(arguments[0], '${uniqueId}')">
                             <div class="image-container">
                                 <img class="card-img" src="${thumbUrl}" alt="${vampster.name}" loading="lazy" decoding="async"
                                      onerror="handleCardImageError(this, '${almanacUrl}')">
-                                <div class="zoom-icon" onclick="openModal('${screenshotUrl}', event)" title="${uiStrings.zoom}">🔍</div>
+                                <div class="zoom-icon" onclick="openModal('${screenshotUrl}', arguments[0])" title="${uiStrings.zoom}">🔍</div>
                                 <div class="dummy-badge">${uiStrings.dummyBadge}</div>
                             </div>
                             <div class="card-content">
@@ -626,8 +616,9 @@ function renderTracker() {
     updateProgress();
 }
 
-// --- CUSTOM PINCH TO ZOOM & PAN FÜR DAS MODAL BILD ---
+// --- BILD-MODAL (ZOOM) LOKALE FUNKTIONEN ---
 const modal = document.getElementById('image-modal');
+/** @type {HTMLImageElement} */
 const modalImg = document.getElementById('modal-img');
 
 let scale = 1;
