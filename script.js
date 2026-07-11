@@ -581,7 +581,7 @@ function renderTracker() {
                             <div class="image-container">
                                 <img class="card-img" src="${thumbUrl}" alt="${vampster.name}" loading="lazy" decoding="async"
                                      onerror="handleCardImageError(this, '${almanacUrl}')">
-                                <div class="zoom-icon" onclick="openModal('${screenshotUrl}', arguments[0])" title="${uiStrings.zoom}">🔍</div>
+                                <div class="zoom-icon" onclick="openModal('${screenshotUrl}', '${thumbUrl}', arguments[0])" title="${uiStrings.zoom}">🔍</div>
                                 <div class="dummy-badge">${uiStrings.dummyBadge}</div>
                             </div>
                             <div class="card-content">
@@ -621,6 +621,8 @@ const modal = document.getElementById('image-modal');
 /** @type {HTMLImageElement} */
 const modalImg = document.getElementById('modal-img');
 
+let currentModalImageSrc = ''; // Verhindert Race-Conditions bei schnellem Wechsel
+
 let scale = 1;
 let pointX = 0, pointY = 0;
 let startX = 0, startY = 0;
@@ -628,23 +630,24 @@ let startDistance = 0;
 let isPinching = false;
 let isPanning = false;
 
-function openModal(imgSrc, event) {
+function openModal(imgSrc, thumbSrc, event) {
     event.stopPropagation();
 
-    // Entferne die loaded-Klasse sofort, damit das alte Bild unsichtbar wird
-    modalImg.classList.remove('loaded');
+    currentModalImageSrc = imgSrc;
 
-    // Sobald das neue Bild geladen ist, blenden wir es ein
-    modalImg.onload = function () {
-        modalImg.classList.add('loaded');
+    // Zeige das Thumbnail sofort an (da es bereits vom Browser geladen wurde)
+    modalImg.src = thumbSrc;
+    modalImg.classList.add('loaded'); // Direkt einblenden
+
+    // Lade das hochauflösende Bild im Hintergrund
+    const highRes = new Image();
+    highRes.onload = function () {
+        // Bildquelle nahtlos austauschen, falls der User nicht schon ein anderes Bild geöffnet hat
+        if (currentModalImageSrc === imgSrc) {
+            modalImg.src = imgSrc;
+        }
     };
-    
-    modalImg.src = imgSrc;
-
-    // Sicherheits-Check, falls das Bild bereits im Browser-Cache ist und onload nicht feuert
-    if (modalImg.complete) {
-        modalImg.classList.add('loaded');
-    }
+    highRes.src = imgSrc;
     
     modal.classList.add('show');
 

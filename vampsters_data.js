@@ -175,8 +175,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 4/14 in Moonlit Pines",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Auf dem Weg richtung den Ruinen im Norden, vor der Weggabelung unten im Wald.",
+            "en": "On the path towards the ruins in the north, before the trail junction down in the forest."
         }
     },
     {
@@ -375,8 +375,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 10/14 in Moonlit Pines",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Über dem Yabbis-Teich im Westen des Waldes.",
+            "en": "Above Yabbis pond in the west of the forest."
         }
     },
     {
@@ -660,23 +660,23 @@ const VAMPSTERS_DATA = [
         }
     },
     {
-        "index": 75,
-        "id": "vamp_075",
-        "name": "Roma",
+        "index": 77,
+        "id": "vamp_077",
+        "name": "Joshua",
         "room": "Room_Exterior_Plot",
         "hat": "",
         "sprite": "Icon_Vampster.png",
-        "image": "assets/vampsters/075_Roma.png",
-        "localIndex": 4,
+        "image": "assets/vampsters/077_Joshua.png",
+        "localIndex": 3,
         "totalInRegion": 4,
         "regionDE": "Zuhause",
         "regionEN": "Home",
         "almanacTextDE": "Vampster 4/4 in Zuhause",
         "almanacTextEN": "Vampster 4/4 in Home",
-        "oldId": "vamp_gg_03",
+        "oldId": "vamp_gg_02",
         "desc": {
-            "de": "An der Kante links von der Krypta.",
-            "en": "By the edge to the left of the crypt"
+            "de": "Rechts vom kleinen Wasserfall.",
+            "en": "To the right of the small waterfall"
         }
     },
     {
@@ -691,8 +691,8 @@ const VAMPSTERS_DATA = [
         "totalInRegion": 4,
         "regionDE": "Zuhause",
         "regionEN": "Home",
-        "almanacTextDE": "Vampster 2/4 in Zuhause",
-        "almanacTextEN": "Vampster 2/4 in Home",
+        "almanacTextDE": "Vampster 3/4 in Zuhause",
+        "almanacTextEN": "Vampster 3/4 in Home",
         "oldId": "vamp_gg_01",
         "desc": {
             "de": "Am langen Strandabschnitt.",
@@ -700,23 +700,23 @@ const VAMPSTERS_DATA = [
         }
     },
     {
-        "index": 77,
-        "id": "vamp_077",
-        "name": "Joshua",
+        "index": 75,
+        "id": "vamp_075",
+        "name": "Roma",
         "room": "Room_Exterior_Plot",
         "hat": "",
         "sprite": "Icon_Vampster.png",
-        "image": "assets/vampsters/077_Joshua.png",
-        "localIndex": 3,
+        "image": "assets/vampsters/075_Roma.png",
+        "localIndex": 4,
         "totalInRegion": 4,
         "regionDE": "Zuhause",
         "regionEN": "Home",
-        "almanacTextDE": "Vampster 3/4 in Zuhause",
-        "almanacTextEN": "Vampster 3/4 in Home",
-        "oldId": "vamp_gg_02",
+        "almanacTextDE": "Vampster 2/4 in Zuhause",
+        "almanacTextEN": "Vampster 2/4 in Home",
+        "oldId": "vamp_gg_03",
         "desc": {
-            "de": "Rechts vom kleinen Wasserfall.",
-            "en": "To the right of the small waterfall"
+            "de": "An der Kante links von der Krypta.",
+            "en": "By the edge to the left of the crypt"
         }
     },
     {
