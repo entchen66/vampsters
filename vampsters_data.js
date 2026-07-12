@@ -15,8 +15,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 1/7 in Misty Shores",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Links von der Treppe vom Strand, wo sich die Echohöhle befindet, hinter dem Baum.",
+            "en": "Left of the stairs from the beach, where the Echo Cave is located, behind the tree."
         }
     },
     {

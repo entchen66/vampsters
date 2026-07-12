@@ -1,5 +1,6 @@
 // Automatisch generiert durch scripts/generate_hashes.js
 const IMAGE_HASHES = {
+    "vamp_001.png": "3b8d7ad6",
     "vamp_002.png": "a22b4caf",
     "vamp_003.png": "e7bcbe9d",
     "vamp_004.png": "b86f4e3b",
