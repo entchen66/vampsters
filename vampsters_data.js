@@ -295,8 +295,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 12/14 in Moonlit Pines",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Links neben dem Feld bei Luna's Farm. Ist hinter dem Baum versteckt.",
+            "en": "To the left of the field at Luna's Farm. Is hidden behind the tree."
         }
     },
     {
