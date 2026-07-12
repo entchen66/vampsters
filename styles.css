@@ -571,8 +571,9 @@ h1 {
 }
 
 .modal-content {
-    max-width: 90%;
-    max-height: 90vh;
+    width: 90vw;
+    height: 90vh;
+    object-fit: contain;
     border-radius: 4px;
     will-change: transform, opacity;
     transform-origin: center center;
@@ -637,7 +638,9 @@ footer a {
     }
 
     .modal-content {
-        max-width: 100%;
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
     }
 }
 

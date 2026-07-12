@@ -13,10 +13,10 @@ const translations = {
         wip: "🎉 <strong>Erfolg:</strong> Alle 100 Vampster des Spiels sind jetzt in der Datenbank registriert! Nicht gefundene Fundorte zeigen ein Platzhalter-Bild. Wenn du einen fehlenden Screenshot hast, sende ihn mir gerne per Discord an meinen Account: <strong>foxyfire</strong> (ID: <code>1524903125264240802</code>).",
         regions: {
             "Cave of Echoes": "Echohöhle",
-            "Town": "Stadt",
+            "Moonlight Peaks (Town)": "Moonlight Peaks (Stadt)",
             "Moonlit Pines": "Mondscheinwald",
             "Misty Shores": "Nebelküste",
-            "Home": "Zuhause",
+            "Home (Farm)": "Zuhause (Farm)",
             "Howling Marshes": "Heulender Sumpf",
             "Khazan Temple": "Khazan-Tempel",
             "Twilight Catacombs": "Katakomben der Dämmerung",
@@ -37,10 +37,10 @@ const translations = {
         wip: "🎉 <strong>Success:</strong> All 100 Vampsters in the game are now registered in the database! Missing locations show a placeholder icon. If you have a missing screenshot, feel free to send it to me via Discord private message to my account: <strong>foxyfire</strong> (ID: <code>1524903125264240802</code>).",
         regions: {
             "Cave of Echoes": "Cave of Echoes",
-            "Town": "Town",
+            "Moonlight Peaks (Town)": "Moonlight Peaks (Town)",
             "Moonlit Pines": "Moonlit Pines",
             "Misty Shores": "Misty Shores",
-            "Home": "Home",
+            "Home (Farm)": "Home (Farm)",
             "Howling Marshes": "Howling Marshes",
             "Khazan Temple": "Khazan Temple",
             "Twilight Catacombs": "Twilight Catacombs",
@@ -505,8 +505,8 @@ function renderTracker() {
         "Khazan Temple",
         "Luna Bay",
         "Howling Marshes",
-        "Home",
-        "Town",
+        "Home (Farm)",
+        "Moonlight Peaks (Town)",
         "Twilight Catacombs",
         "Cave of Echoes",
         "Crystal Cave"
@@ -574,7 +574,8 @@ function renderTracker() {
                 ? vampster.desc[currentLang]
                 : uiStrings.dummyDesc.replace('{id}', uniqueId);
 
-            const almanacText = currentLang === 'de' ? vampster.almanacTextDE : vampster.almanacTextEN;
+            const rawAlmanacText = currentLang === 'de' ? vampster.almanacTextDE : vampster.almanacTextEN;
+            const almanacText = rawAlmanacText ? rawAlmanacText.replace(/\d+(?=\s*\/)/, 'x') : '';
 
             const cardHtml = `
                         <div class="card ${isCollected ? 'completed' : ''}" id="card-${uniqueId}" data-region="${region}" onclick="handleCardClick(arguments[0], '${uniqueId}')">
