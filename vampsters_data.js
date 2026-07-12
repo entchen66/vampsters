@@ -575,8 +575,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 7/7 in Howling Marshes",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Im Westen, links neben dem Boot, hinter dem Pfosten.",
+            "en": "To the west, left of the boat, behind the posts."
         }
     },
     {
