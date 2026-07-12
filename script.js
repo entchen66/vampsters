@@ -558,9 +558,14 @@ function renderTracker() {
             }
 
             // Try screenshot first, if error -> fallback to Almanac Icon
-            const screenshotUrl = `assets/screenshots/${uniqueId}.png`;
+            // Cache Buster wird nur angehängt, wenn wir nicht im lokalen file:// System sind.
+            // Er nutzt den individuellen MD5-Hash des Bildes aus assets/hashes.js
+            const isLocalProtocol = window.location.protocol === 'file:';
+            const fileName = `${uniqueId}.png`;
+            const fileHash = (typeof IMAGE_HASHES !== 'undefined' && IMAGE_HASHES[fileName]) ? IMAGE_HASHES[fileName] : '';
+            const cacheBuster = (isLocalProtocol || !fileHash) ? '' : `?v=${fileHash}`;
 
-            // Dynamisch generierte Thumbnails via Image-CDN (nur wenn online)
+            const screenshotUrl = `assets/screenshots/${fileName}${cacheBuster}`;
             const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
             const liveBaseUrl = 'https://entchen66.github.io/vampsters/';
             const thumbUrl = isLocal
