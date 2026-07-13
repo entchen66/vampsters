@@ -555,8 +555,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 4/7 in Howling Marshes",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Auf der Insel im heulenden Sumpf, an der Linken Seite vom Eingang in die Krypta.",
+            "en": "On the island in the howling marshes, on the left side of the entrance to the crypt."
         }
     },
     {
