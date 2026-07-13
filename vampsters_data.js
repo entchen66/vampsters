@@ -175,8 +175,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 4/14 in Moonlit Pines",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Direkt unter dem Eingang zur Kristallhöhle an der Felswand.",
+            "en": "Directly under the entrance to the Crystal Cave on the rock wall."
         }
     },
     {

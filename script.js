@@ -222,10 +222,10 @@ function handleCardClick(event, id) {
     if (regionName) {
         const isCompleted = updateRegionHeader(regionName);
         const regionId = regionName.replace(/\s+/g, '-').toLowerCase();
-        const grid = document.getElementById(`grid-${regionId}`);
+        const gridWrapper = document.getElementById(`grid-wrapper-${regionId}`);
         const header = document.getElementById(`header-${regionId}`);
 
-        if (isCompleted && grid && !grid.classList.contains('collapsed')) {
+        if (isCompleted && gridWrapper && !gridWrapper.classList.contains('collapsed')) {
             // Kurze Verzögerung, damit die Kachel-Animation beendet werden kann
             setTimeout(() => {
                 if (header) {
@@ -237,15 +237,19 @@ function handleCardClick(event, id) {
                         const rect = header.getBoundingClientRect();
                         createMassiveSparkleBurst(rect.left + rect.width / 2, rect.top + rect.height / 2);
                         header.classList.add('collapsed');
-                        grid.classList.add('collapsed');
+                        gridWrapper.classList.add('collapsed');
                     };
 
                     if (isHeaderVisible) {
                         // Header ist sichtbar → sofort Sparkle + Collapse
                         fireAndCollapse();
                     } else {
-                        // Header ist außerhalb des sichtbaren Bereichs → erst hinscrollen
-                        header.scrollIntoView({behavior: 'smooth', block: 'start'});
+                        // Header ist außerhalb des sichtbaren Bereichs → erst hinscrollen (ca. 20% unter der Oberkante)
+                        const targetY = window.scrollY + header.getBoundingClientRect().top - (window.innerHeight * 0.2);
+                        window.scrollTo({
+                            top: targetY,
+                            behavior: 'smooth'
+                        });
 
                         // Warten bis das Scrollen abgeschlossen ist
                         let lastY = -1;
@@ -267,11 +271,11 @@ function handleCardClick(event, id) {
                         requestAnimationFrame(check);
                     }
                 } else {
-                    grid.classList.add('collapsed');
+                    gridWrapper.classList.add('collapsed');
                 }
             }, 600);
-        } else if (!isCompleted && grid && grid.classList.contains('collapsed')) {
-            grid.classList.remove('collapsed');
+        } else if (!isCompleted && gridWrapper && gridWrapper.classList.contains('collapsed')) {
+            gridWrapper.classList.remove('collapsed');
             if (header) {
                 header.classList.remove('collapsed');
             }
@@ -304,10 +308,10 @@ function updateRegionHeader(regionName) {
 
 // --- REGION MANUAL EINKLAPPEN/AUSKLAPPEN ---
 function toggleRegion(regionId) {
-    const grid = document.getElementById(`grid-${regionId}`);
+    const gridWrapper = document.getElementById(`grid-wrapper-${regionId}`);
     const header = document.getElementById(`header-${regionId}`);
-    if (grid && header) {
-        const isCollapsed = grid.classList.toggle('collapsed');
+    if (gridWrapper && header) {
+        const isCollapsed = gridWrapper.classList.toggle('collapsed');
         header.classList.toggle('collapsed', isCollapsed);
     }
 }
@@ -537,14 +541,20 @@ function renderTracker() {
         title.innerText = `${baseName} (${regionCollected} / ${regionTotal})`;
         title.onclick = () => toggleRegion(regionId);
 
+        const gridWrapper = document.createElement('div');
+        gridWrapper.className = 'grid-wrapper';
+        gridWrapper.id = `grid-wrapper-${regionId}`;
+
         const grid = document.createElement('div');
         grid.className = 'grid';
         grid.id = `grid-${regionId}`;
 
+        gridWrapper.appendChild(grid);
+
         // If all collected, collapse by default
         if (regionCollected === regionTotal) {
             title.classList.add('collapsed');
-            grid.classList.add('collapsed');
+            gridWrapper.classList.add('collapsed');
         }
 
         vampsters.forEach((vampster) => {
@@ -615,7 +625,7 @@ function renderTracker() {
         });
 
         section.appendChild(title);
-        section.appendChild(grid);
+        section.appendChild(gridWrapper);
         container.appendChild(section);
     });
 

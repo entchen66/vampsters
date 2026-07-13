@@ -20,6 +20,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    overflow-x: hidden; /* Nur auf dem Body, um vertikales Scrollen nicht zu blockieren */
     overscroll-behavior-y: none;
     background-image: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(88, 28, 135, 0.25) 0%, transparent 60%),
     radial-gradient(ellipse 60% 50% at 80% 30%, rgba(157, 23, 77, 0.2) 0%, transparent 55%),
@@ -367,26 +368,27 @@ h1 {
     transform: rotate(-90deg);
 }
 
+.grid-wrapper {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+    opacity: 1;
+}
+
+.grid-wrapper.collapsed {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    pointer-events: none;
+}
+
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 15px;
-    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, transform 0.5s ease, gap 0.5s ease, padding 0.5s ease;
-    max-height: 2500px;
-    opacity: 1;
     overflow: hidden;
     padding: 40px 20px; /* Erhöhtes vertikales Padding für ausreichend Platz an den Rändern */
     margin: -25px -20px -40px -20px; /* Perfekter Ausgleich ohne Scrollbars */
-}
-
-.grid.collapsed {
-    max-height: 0 !important;
-    opacity: 0;
-    transform: scaleY(0.95);
-    pointer-events: none;
-    gap: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    min-height: 0; /* Wichtig, damit die grid-template-rows 0fr Animation funktioniert */
 }
 
 .card {
@@ -614,6 +616,11 @@ footer a {
 @media (max-width: 600px) {
     body {
         padding: 10px;
+    }
+
+    .grid {
+        margin: -25px -10px -40px -10px;
+        padding: 40px 10px;
     }
 
     .header-container {
