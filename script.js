@@ -871,16 +871,20 @@ window.onload = function () {
     ];
     const flightPaths = ['floatDriftLeft', 'floatDriftRight', 'floatWander', 'floatSpiral'];
 
-    for (let i = 0; i < 18; i++) {
+    // Weniger Partikel auf mobilen Geräten für bessere CPU/GPU Performance
+    const isMobile = window.innerWidth <= 768;
+    const particleCount = isMobile ? 6 : 18;
+
+    for (let i = 0; i < particleCount; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
-        const size = Math.random() * 14 + 14; // 14px bis 28px (größer & besser sichtbar)
+        const size = Math.random() * 14 + 14; // 14px bis 28px
         p.style.width = size + 'px';
         p.style.height = size + 'px';
 
         // Zufällige Position über die gesamte Seite verteilt
         p.style.left = Math.random() * 100 + '%';
-        p.style.top = (Math.random() * 100) + '%'; // Nicht nur unten starten
+        p.style.top = (Math.random() * 100) + '%';
 
         const color = particleColors[Math.floor(Math.random() * particleColors.length)];
         const shape = shapes[Math.floor(Math.random() * shapes.length)];
@@ -891,8 +895,13 @@ window.onload = function () {
             p.innerHTML = `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="${shape}" fill="${color}" /></svg>`;
         }
 
-        // Stärkerer Glow – wie bei den Sparkle-Partikeln
-        p.style.filter = `drop-shadow(0 0 4px ${color}) drop-shadow(0 0 10px ${color})`;
+        // Performance-Optimierung: drop-shadow ist sehr rechenintensiv auf Handys
+        if (isMobile) {
+            p.style.filter = 'none'; // Reines SVG, schont den Akku massiv
+            p.style.opacity = '0.7';
+        } else {
+            p.style.filter = `drop-shadow(0 0 6px ${color})`; // Nur 1 statt 2 Shadows auf Desktop
+        }
 
         // Zufälligen Flugpfad zuweisen
         const path = flightPaths[Math.floor(Math.random() * flightPaths.length)];
@@ -905,7 +914,7 @@ window.onload = function () {
 };
 
 // --- CUSTOM BAT CURSOR ANIMATION ---
-if (window.matchMedia('(pointer: fine)').matches) {
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
     const crystal = document.getElementById('crystal');
     const bat = document.getElementById('bat');
     const leftWing = document.getElementById('left-wing');

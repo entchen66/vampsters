@@ -22,16 +22,28 @@ body {
     min-height: 100vh;
     overflow-x: hidden; /* Nur auf dem Body, um vertikales Scrollen nicht zu blockieren */
     overscroll-behavior-y: none;
-    background-image: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(88, 28, 135, 0.25) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 30%, rgba(157, 23, 77, 0.2) 0%, transparent 55%),
-    radial-gradient(ellipse 70% 40% at 50% 90%, rgba(67, 20, 128, 0.2) 0%, transparent 50%);
-    background-attachment: fixed;
 
     /* Verhindert das Markieren von Text auf der gesamten Seite */
     user-select: none;
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE/Edge */
+}
+
+/* Performance-Fix: Fixed Backgrounds verursachen massives Repainting auf Mobile beim Scrollen. 
+   Ein fixes Pseudo-Element ist hardware-beschleunigt und schont den Akku massiv. */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(88, 28, 135, 0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 30%, rgba(157, 23, 77, 0.2) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 40% at 50% 90%, rgba(67, 20, 128, 0.2) 0%, transparent 50%);
+    z-index: -2;
+    pointer-events: none;
 }
 
 /* Magische schwebende Partikel im Hintergrund */
