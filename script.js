@@ -897,10 +897,9 @@ window.onload = function () {
 
         // Performance-Optimierung: drop-shadow ist sehr rechenintensiv auf Handys
         if (isMobile) {
-            p.style.filter = 'none'; // Reines SVG, schont den Akku massiv
-            p.style.opacity = '0.7';
+            p.style.filter = 'none';
         } else {
-            p.style.filter = `drop-shadow(0 0 6px ${color})`; // Nur 1 statt 2 Shadows auf Desktop
+            p.style.filter = `drop-shadow(0 0 6px ${color})`;
         }
 
         // Zufälligen Flugpfad zuweisen
