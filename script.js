@@ -3,7 +3,8 @@
 // ==========================================
 const translations = {
     de: {
-        title: "🦇 Moonlight Peaks - Vampster Tracker",
+        title: "🦇 Moonlight Peaks - Vampster Tracker 🦇",
+        tabTitle: "Moonlight Peaks - Vampster Tracker",
         progress: "GESAMMELT",
         collected: "Gesammelt",
         noImage: "Kein Bild vorhanden",
@@ -27,7 +28,8 @@ const translations = {
         dummyDesc: "Fundort noch unbekannt. Sende gerne einen Screenshot per Discord an <strong>foxyfire</strong>!"
     },
     en: {
-        title: "🦇 Moonlight Peaks - Vampster Tracker",
+        title: "🦇 Moonlight Peaks - Vampster Tracker 🦇",
+        tabTitle: "Moonlight Peaks - Vampster Tracker",
         progress: "COLLECTED",
         collected: "Collected",
         noImage: "No image available",
@@ -155,7 +157,7 @@ function setLanguage(lang) {
     document.getElementById('btn-de').classList.toggle('active', lang === 'de');
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
 
-    document.title = translations[lang].title;
+    document.title = translations[lang].tabTitle;
     document.getElementById('page-title').innerText = translations[lang].title;
     document.getElementById('progress-label').innerText = translations[lang].progress;
     document.getElementById('credits-label').innerText = translations[lang].credits;
@@ -663,9 +665,18 @@ function renderTracker() {
             const screenshotUrl = `assets/screenshots/${fileName}${cacheBuster}`;
             const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
             const liveBaseUrl = 'https://entchen66.github.io/vampsters/';
-            const thumbUrl = isLocal
-                ? screenshotUrl
-                : `https://wsrv.nl/?url=${encodeURIComponent(liveBaseUrl + screenshotUrl)}&w=350&output=webp&q=70`;
+
+            // WICHTIG: Wenn wir keinen Hash haben und NICHT lokal sind, existiert das Bild nicht!
+            // In diesem Fall überspringen wir die Anfrage ans CDN und markieren die Karte sofort als Dummy.
+            const hasScreenshot = (typeof IMAGE_HASHES !== 'undefined') && (IMAGE_HASHES[fileName] !== undefined);
+            const useScreenshot = hasScreenshot || isLocal;
+            const isDummy = !useScreenshot;
+
+            const thumbUrl = useScreenshot
+                ? (isLocal
+                    ? screenshotUrl
+                    : `https://wsrv.nl/?url=${encodeURIComponent(liveBaseUrl + screenshotUrl)}&w=350&output=webp&q=70`)
+                : vampster.image; // Sofort Almanac-Icon nutzen
 
             const almanacUrl = vampster.image;
 
@@ -678,7 +689,7 @@ function renderTracker() {
             const almanacText = rawAlmanacText ? rawAlmanacText.replace(/\d+(?=\s*\/)/, 'x') : '';
 
             const cardHtml = `
-                        <div class="card ${isCollected ? 'completed' : ''}" id="card-${uniqueId}" data-region="${region}" onclick="handleCardClick(arguments[0], '${uniqueId}')">
+                        <div class="card ${isCollected ? 'completed' : ''} ${isDummy ? 'is-dummy' : ''}" id="card-${uniqueId}" data-region="${region}" onclick="handleCardClick(arguments[0], '${uniqueId}')">
                             <div class="image-container">
                                 <img class="card-img" src="${thumbUrl}" alt="${vampster.name}" loading="lazy" decoding="async"
                                      onerror="handleCardImageError(this, '${almanacUrl}')">

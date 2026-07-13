@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <!-- Flügel -->
+    <path d="M 7 10 Q 3 6 1 5 Q 4 9 2 13 Q 5 15 4 19 Q 7 18 8 20 Z" fill="#2D1B4E" stroke="#B066FE" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M 17 10 Q 21 6 23 5 Q 20 9 22 13 Q 19 15 20 19 Q 17 18 16 20 Z" fill="#2D1B4E" stroke="#B066FE" stroke-width="1.5" stroke-linejoin="round"/>
+
+    <!-- Ohren -->
+    <path d="M 8 8 L 4 1 L 10 6 Z" fill="#2D1B4E" stroke="#B066FE" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M 16 8 L 20 1 L 14 6 Z" fill="#2D1B4E" stroke="#B066FE" stroke-width="1.5" stroke-linejoin="round"/>
+
+    <!-- Körper -->
+    <ellipse cx="12" cy="15" rx="7" ry="8" fill="#2D1B4E" stroke="#1A0F2E" stroke-width="1.5"/>
+
+    <!-- Augen & Zähne -->
+    <ellipse cx="9" cy="14" rx="1.5" ry="2.5" fill="#FFD700"/>
+    <ellipse cx="15" cy="14" rx="1.5" ry="2.5" fill="#FFD700"/>
+    <path d="M 10.5 18 L 11 20 L 11.5 18 Z" fill="#FFFFFF"/>
+    <path d="M 12.5 18 L 13 20 L 13.5 18 Z" fill="#FFFFFF"/>
+</svg>

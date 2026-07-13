@@ -6,6 +6,7 @@
 
     <title>Moonlight Peaks - Vampster Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap" rel="stylesheet">
+    <link href="favicon.svg" rel="icon" type="image/svg+xml">
     <link href="styles.css" rel="stylesheet">
 </head>
 <body>
@@ -31,7 +32,6 @@
 </div>
 
 
-
 <div class="main-content" id="tracker-container"></div>
 
 <!-- Modal schließt sich nun bei Klick *irgendwo*, auch direkt auf das Bild -->
@@ -50,31 +50,35 @@
     <!-- Die Fledermaus -->
     <div class="bat-container" id="bat">
         <svg class="flying-bat" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-            
+
             <!-- Linker Flügel -->
             <g transform="translate(12, 18)">
                 <g id="left-wing" style="transform-origin: 0 0; will-change: transform;">
-                    <path d="M 0 0 C -8 -12, -18 -8, -22 -2 C -18 2, -12 1, -8 4 C -6 5, -3 8, 0 6 Z" fill="#2D1B4E" stroke="#B066FE" stroke-width="1" stroke-linejoin="round" />
+                    <path d="M 0 0 C -8 -12, -18 -8, -22 -2 C -18 2, -12 1, -8 4 C -6 5, -3 8, 0 6 Z" fill="#2D1B4E" stroke="#B066FE" stroke-linejoin="round" stroke-width="1"/>
                 </g>
             </g>
-            
+
             <!-- Rechter Flügel -->
             <g transform="translate(20, 18)">
                 <g id="right-wing" style="transform-origin: 0 0; will-change: transform;">
-                    <path d="M 0 0 C 8 -12, 18 -8, 22 -2 C 18 2, 12 1, 8 4 C 6 5, 3 8, 0 6 Z" fill="#2D1B4E" stroke="#B066FE" stroke-width="1" stroke-linejoin="round" />
+                    <path d="M 0 0 C 8 -12, 18 -8, 22 -2 C 18 2, 12 1, 8 4 C 6 5, 3 8, 0 6 Z" fill="#2D1B4E" stroke="#B066FE" stroke-linejoin="round" stroke-width="1"/>
                 </g>
             </g>
 
             <!-- Körper & Ohren -->
-            <ellipse cx="16" cy="18" rx="7" ry="8" fill="#2D1B4E" stroke="#1A0F2E" stroke-width="1.5" />
+            <ellipse cx="16" cy="18" fill="#2D1B4E" rx="7" ry="8" stroke="#1A0F2E" stroke-width="1.5"/>
             <path d="M 12 11 L 8 4 L 14 9 Z" fill="#2D1B4E" stroke="#B066FE" stroke-width="1" stroke-linejoin="round"/>
             <path d="M 20 11 L 24 4 L 18 9 Z" fill="#2D1B4E" stroke="#B066FE" stroke-width="1" stroke-linejoin="round"/>
-            
+
             <!-- Augen & Zähne -->
-            <ellipse cx="13" cy="17" rx="1.5" ry="2.5" fill="#FFD700"><animate attributeName="ry" values="2.5; 0.2; 2.5; 2.5" keyTimes="0; 0.05; 0.1; 1" dur="4s" repeatCount="indefinite"/></ellipse>
-            <ellipse cx="19" cy="17" rx="1.5" ry="2.5" fill="#FFD700"><animate attributeName="ry" values="2.5; 0.2; 2.5; 2.5" keyTimes="0; 0.05; 0.1; 1" dur="4s" repeatCount="indefinite"/></ellipse>
-            <path d="M 14.5 21 L 15 23 L 15.5 21 Z" fill="#FFFFFF" />
-            <path d="M 16.5 21 L 17 23 L 17.5 21 Z" fill="#FFFFFF" />
+            <ellipse cx="13" cy="17" fill="#FFD700" rx="1.5" ry="2.5">
+                <animate attributeName="ry" dur="4s" keyTimes="0; 0.05; 0.1; 1" repeatCount="indefinite" values="2.5; 0.2; 2.5; 2.5"/>
+            </ellipse>
+            <ellipse cx="19" cy="17" fill="#FFD700" rx="1.5" ry="2.5">
+                <animate attributeName="ry" dur="4s" keyTimes="0; 0.05; 0.1; 1" repeatCount="indefinite" values="2.5; 0.2; 2.5; 2.5"/>
+            </ellipse>
+            <path d="M 14.5 21 L 15 23 L 15.5 21 Z" fill="#FFFFFF"/>
+            <path d="M 16.5 21 L 17 23 L 17.5 21 Z" fill="#FFFFFF"/>
         </svg>
     </div>
 </div>
