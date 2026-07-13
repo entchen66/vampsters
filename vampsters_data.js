@@ -403,8 +403,12 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 1/2 in Luna Bay",
         "oldId": null,
         "desc": {
-            "de": "Link vom Eingang zur Bucht direkt am Meer bei den drei Palmen. Hinweis: Kann nicht direkt nach dem freischalten der Bucht zurückgebracht werden.",
-            "en": "To the left of the entrance to the bay, right by the sea with the three palm trees. Note: Cannot be returned directly after unlocking the bay."
+            "de": "Rechts vom Eingang zur Bucht und über die kleine Brücke. Versteckt hinter dem Torbogen.",
+            "en": "To the right of the entrance to the bay and over the small bridge. Hidden behind the archway."
+        },
+        "note": {
+            "de": "Kann nicht direkt nach dem freischalten der Bucht zurückgebracht werden.",
+            "en": "Cannot be returned directly after unlocking the bay."
         }
     },
     {
@@ -420,8 +424,12 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 2/2 in Luna Bay",
         "oldId": null,
         "desc": {
-            "de": "Rechts vom Eingang zur Bucht und über die kleine Brücke. Versteckt hinter dem Torbogen. Hinweis: Kann nicht direkt nach dem freischalten der Bucht zurückgebracht werden.",
-            "en": "To the right of the entrance to the bay and over the small bridge. Hidden behind the archway. Note: Cannot be returned directly after unlocking the bay."
+            "de": "Links vom Eingang zur Bucht direkt am Meer bei den drei Palmen.",
+            "en": "To the left of the entrance to the bay, right by the sea with the three palm trees."
+        },
+        "note": {
+            "de": "Kann nicht direkt nach dem freischalten der Bucht zurückgebracht werden.",
+            "en": "Cannot be returned directly after unlocking the bay."
         }
     },
     {
@@ -1323,6 +1331,10 @@ const VAMPSTERS_DATA = [
         "desc": {
             "de": null,
             "en": null
+        },
+        "note": {
+            "de": "Kann nur während des Evernight-Festivals eingesammelt werden.",
+            "en": "Can only be collected during the Evernight festival."
         }
     },
     {
@@ -1340,6 +1352,10 @@ const VAMPSTERS_DATA = [
         "desc": {
             "de": null,
             "en": null
+        },
+        "note": {
+            "de": "Kann nur während des Evernight-Festivals eingesammelt werden.",
+            "en": "Can only be collected during the Evernight festival."
         }
     },
     {
@@ -1374,6 +1390,10 @@ const VAMPSTERS_DATA = [
         "desc": {
             "de": "Auf dem Pier während des Loveage-Festivals.",
             "en": "On the pier during the Loveage festival"
+        },
+        "note": {
+            "de": "Kann nur während des Loveage-Festivals eingesammelt werden.",
+            "en": "Can only be collected during the Loveage festival."
         }
     },
     {
@@ -1389,8 +1409,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 15/53 in Town",
         "oldId": "vamp_town_04",
         "desc": {
-            "de": "Auf dem Pier während des Loveage-Festivals (Zweiter Vampster).",
-            "en": "On the pier during the Loveage festival"
+            "de": "Auf dem Pier der Stadt rechts hinter der letzten Bank.",
+            "en": "On the pier of the town, to the right behind the last bench."
         }
     },
     {
@@ -1425,6 +1445,10 @@ const VAMPSTERS_DATA = [
         "desc": {
             "de": null,
             "en": null
+        },
+        "note": {
+            "de": "Kann nur während des Winterwake-Festivals eingesammelt werden.",
+            "en": "Can only be collected during the Winterwake festival."
         }
     },
     {

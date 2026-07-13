@@ -688,6 +688,12 @@ function renderTracker() {
             const rawAlmanacText = currentLang === 'de' ? vampster.almanacTextDE : vampster.almanacTextEN;
             const almanacText = rawAlmanacText ? rawAlmanacText.replace(/\d+(?=\s*\/)/, 'x') : '';
 
+            let noteHtml = '';
+            if (vampster.note && vampster.note[currentLang]) {
+                const hintLabel = currentLang === 'de' ? 'Hinweis:' : 'Hint:';
+                noteHtml = `<p class="card-note"><strong>${hintLabel}</strong> ${vampster.note[currentLang]}</p>`;
+            }
+
             const cardHtml = `
                         <div class="card ${isCollected ? 'completed' : ''} ${isDummy ? 'is-dummy' : ''}" id="card-${uniqueId}" data-region="${region}" onclick="handleCardClick(arguments[0], '${uniqueId}')">
                             <div class="image-container">
@@ -705,6 +711,7 @@ function renderTracker() {
                                         ${almanacText}
                                     </div>
                                     <p class="card-desc" data-has-real-desc="${hasRealDesc ? 'true' : 'false'}">${displayDesc}</p>
+                                    ${noteHtml}
                                 </div>
                                 <div class="card-footer" style="margin-top: 10px;">
                                     <label class="checkbox-container">
