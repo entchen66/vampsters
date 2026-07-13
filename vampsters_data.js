@@ -215,8 +215,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 7/14 in Moonlit Pines",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Dieser kleine Racker versteckt sich in Fiona's Garten, direkt in der Ecke links neben der Treppe.",
+            "en": "This little cutie is hiding in Fiona's garden, directly in the corner to the left of the staircase."
         }
     },
     {
@@ -355,8 +355,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 11/14 in Moonlit Pines",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Der Vampster mit dem Lolli auf dem Kopf versteckt sich auf dem Weg zum Samenladen, links vor der Treppe nach oben, neben dem Wasserfall.",
+            "en": "The vampster with the lollipop on his head is hiding on the path to the seed shop, to the left of the staircase going up, next to the waterfall."
         }
     },
     {
@@ -395,8 +395,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 8/14 in Moonlit Pines",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Versteckt sich im Stall von Luna hinten rechts in der Ecke.",
+            "en": "Hiding in Luna's barn, in the corner at the back right."
         }
     },
     {
@@ -1035,8 +1035,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 20/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "In der Küche hinter dem Weinregal in Noel's Haus.",
+            "en": "In the kitchen behind the wine rack in Noel's house."
         }
     },
     {
