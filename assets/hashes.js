@@ -75,7 +75,7 @@ const IMAGE_HASHES = {
     "vamp_088.png": "0b575036",
     "vamp_091.png": "8d6aecb4",
     "vamp_092.png": "29ac17e8",
-    "vamp_093.png": "cb5429df",
+    "vamp_093.png": "747cb5cf",
     "vamp_094.png": "c33aef43",
     "vamp_096.png": "ea65def8",
     "vamp_097.png": "d6dcf51a",
