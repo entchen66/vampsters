@@ -303,6 +303,17 @@ function updateRegionHeader(regionName) {
         titleElement.innerText = `${baseName} (${regionCollected} / ${regionTotal})`;
     }
 
+    // Schnellnavigation Eintrag aktualisieren
+    const navItem = document.getElementById(`quick-nav-item-${regionId}`);
+    if (navItem) {
+        const countSpan = navItem.querySelector('.quick-nav-item-count');
+        if (countSpan) {
+            countSpan.innerText = `${regionCollected} / ${regionTotal}`;
+        }
+        const isCompleted = regionCollected === regionTotal;
+        navItem.classList.toggle('completed-region', isCompleted);
+    }
+
     return regionCollected === regionTotal;
 }
 
@@ -315,6 +326,50 @@ function toggleRegion(regionId) {
         header.classList.toggle('collapsed', isCollapsed);
     }
 }
+
+// --- SCHNELLNAVIGATION (FAB & MENU) ---
+function toggleQuickNav(event) {
+    if (event) {
+        event.stopPropagation();
+    }
+    const menu = document.getElementById('quick-nav-menu');
+    if (menu) {
+        menu.classList.toggle('active');
+    }
+}
+
+function closeQuickNav() {
+    const menu = document.getElementById('quick-nav-menu');
+    if (menu) {
+        menu.classList.remove('active');
+    }
+}
+
+function scrollToRegion(regionId) {
+    const header = document.getElementById(`header-${regionId}`);
+    if (header) {
+        // Scrollt so, dass der Header ca. 20% unter der Oberkante des Bildschirms steht
+        const targetY = window.scrollY + header.getBoundingClientRect().top - (window.innerHeight * 0.2);
+        window.scrollTo({
+            top: targetY,
+            behavior: 'smooth'
+        });
+
+        // Falls die Region eingeklappt ist, klappen wir sie automatisch auf
+        const gridWrapper = document.getElementById(`grid-wrapper-${regionId}`);
+        if (gridWrapper && gridWrapper.classList.contains('collapsed')) {
+            toggleRegion(regionId);
+        }
+    }
+}
+
+// Schließen des Schnellnav-Menüs bei Klick außerhalb
+document.addEventListener('click', (event) => {
+    const container = document.getElementById('quick-nav');
+    if (container && !container.contains(event.target)) {
+        closeQuickNav();
+    }
+});
 
 // --- HILFSFUNKTION FÜR SPARKLE-SVG ---
 function applySparkleShape(particle, colors, shapes, shadowBlur) {
@@ -492,6 +547,17 @@ function renderTracker() {
 
     const uiStrings = translations[currentLang];
 
+    // Titel der Schnellnavigation übersetzen
+    const quickNavTitle = document.getElementById('quick-nav-title');
+    if (quickNavTitle) {
+        quickNavTitle.innerText = currentLang === 'de' ? 'Regionen' : 'Regions';
+    }
+
+    const quickNavList = document.getElementById('quick-nav-list');
+    if (quickNavList) {
+        quickNavList.innerHTML = '';
+    }
+
     // Group the 100 vampsters by their English region name
     const grouped = {};
     vampstersData.forEach(v => {
@@ -540,6 +606,25 @@ function renderTracker() {
         const baseName = uiStrings.regions[region] || region;
         title.innerText = `${baseName} (${regionCollected} / ${regionTotal})`;
         title.onclick = () => toggleRegion(regionId);
+
+        // In Schnellnavigation einfügen
+        if (quickNavList) {
+            const isCompleted = regionCollected === regionTotal;
+            const navItem = document.createElement('div');
+            navItem.className = `quick-nav-item ${isCompleted ? 'completed-region' : ''}`;
+            navItem.id = `quick-nav-item-${regionId}`;
+            navItem.onclick = (e) => {
+                e.stopPropagation();
+                scrollToRegion(regionId);
+                closeQuickNav();
+            };
+
+            navItem.innerHTML = `
+                <span class="quick-nav-item-name">${baseName}</span>
+                <span class="quick-nav-item-count">${regionCollected} / ${regionTotal}</span>
+            `;
+            quickNavList.appendChild(navItem);
+        }
 
         const gridWrapper = document.createElement('div');
         gridWrapper.className = 'grid-wrapper';

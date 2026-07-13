@@ -87,6 +87,28 @@
     <div id="credits-company" style="margin-top: 8px; font-size: 11px; opacity: 0.7;"></div>
 </footer>
 
+<!-- Schnellnavigation (FAB) -->
+<div class="quick-nav-container" id="quick-nav">
+    <button class="quick-nav-btn" id="quick-nav-btn" onclick="toggleQuickNav(arguments[0])" title="Schnellnavigation">
+        <svg height="26" viewBox="0 0 24 24" width="26">
+            <!-- Gothic Compass with Bat Wings -->
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#B066FE"/>
+            <path d="M12 6l-2 3.5h4L12 6zm0 12l2-3.5h-4L12 18z" fill="#ff79ff"/>
+            <path d="M6 12l3.5-2v4L6 12zm12 0l-3.5 2v-4L18 12z" fill="#ff79ff"/>
+            <circle cx="12" cy="12" fill="#FFF" r="1.5"/>
+        </svg>
+    </button>
+    <div class="quick-nav-menu" id="quick-nav-menu">
+        <div class="quick-nav-header">
+            <span id="quick-nav-title">Regionen</span>
+            <span class="quick-nav-close" onclick="toggleQuickNav(arguments[0])">&times;</span>
+        </div>
+        <div class="quick-nav-list" id="quick-nav-list">
+            <!-- Wird dynamisch befüllt -->
+        </div>
+    </div>
+</div>
+
 <script src="assets/hashes.js"></script>
 <script src="vampsters_data.js"></script>
 <script src="script.js"></script>
