@@ -403,8 +403,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 1/2 in Luna Bay",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Link vom Eingang zur Bucht direkt am Meer bei den drei Palmen. Hinweis: Kann nicht direkt nach dem freischalten der Bucht zurückgebracht werden.",
+            "en": "To the left of the entrance to the bay, right by the sea with the three palm trees. Note: Cannot be returned directly after unlocking the bay."
         }
     },
     {
@@ -420,8 +420,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 2/2 in Luna Bay",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Rechts vom Eingang zur Bucht und über die kleine Brücke. Versteckt hinter dem Torbogen. Hinweis: Kann nicht direkt nach dem freischalten der Bucht zurückgebracht werden.",
+            "en": "To the right of the entrance to the bay and over the small bridge. Hidden behind the archway. Note: Cannot be returned directly after unlocking the bay."
         }
     },
     {
@@ -1287,8 +1287,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 32/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Hinter der kaputten Bank, neben dem Wasserfall hinter dem Baum.",
+            "en": "Behind the broken bench, next to the waterfall behind the tree."
         }
     },
     {
