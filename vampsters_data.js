@@ -216,8 +216,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 13/14 in Moonlit Pines",
         "oldId": "vamp_mp_03",
         "desc": {
-            "de": "Links vom Pfad, der von Groovy Grove zu den Moonlit Pines führt.",
-            "en": "To the left of the path from Groovy Grove to Moonlit Pines."
+            "de": "Wenn du von deiner Farm aus hoch in den Mondscheinwald gehst, laufe links in den Wald, dort findest du Geri.",
+            "en": "If you walk up from your farm into the Moonlit Pines, take a left into the forest, and you'll find Geri there."
         }
     },
     {
@@ -972,8 +972,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 13/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Im Aquarium des Museums, unten links in einer Luftblase.",
+            "en": "In the aquarium in the museum, lower left side in a bubble."
         }
     },
     {
@@ -989,8 +989,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 23/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Im Kleintier-Raum des Museums, hinter einem Baum oben links.",
+            "en": "In the critter room in the museum, behind a tree in the top left."
         }
     },
     {
@@ -1006,8 +1006,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 33/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Im Kleintier-Raum des Museums, neben dem unteren Ende der Treppe auf der rechten Seite.",
+            "en": "In the critter room in the museum, next to the bottom of the stairs on the right side."
         }
     },
     {
@@ -1023,8 +1023,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 18/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Im Götter-Raum des Museums. Links die Treppe hinunter, hinter der obersten Pflanze.",
+            "en": "In the deity room in the museum. Down the left side of the stairs, behind the top plant."
         }
     },
     {
@@ -1040,8 +1040,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 29/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Im Landwirtschafts-Raum des Museums, hinter einem Busch unten rechts.",
+            "en": "In the farming room in the museum, behind a bush on the lower right side."
         }
     },
     {
@@ -1057,8 +1057,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 44/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Im Landwirtschafts-Raum des Museums, hinter einem Baum auf der linken Seite.",
+            "en": "In the farming room in the museum, behind a tree on the left side."
         }
     },
     {
@@ -1074,8 +1074,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 37/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Im Landwirtschafts-Raum des Museums, oben rechts hinter einem Baum.",
+            "en": "In the farming room in the museum, top right side behind a tree."
         }
     },
     {
@@ -1091,8 +1091,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 5/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Im hinteren Teil der Museumslobby.",
+            "en": "In the back of the museum lobby."
         }
     },
     {
@@ -1108,8 +1108,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 42/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Hinter dem Empfangsschalter des Museums.",
+            "en": "Behind the front desk of the museum."
         }
     },
     {
@@ -1125,8 +1125,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 4/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Am Ende des Übernatürlich-Raums im Museum.",
+            "en": "At the end of the supernatural room in the museum."
         }
     },
     {
