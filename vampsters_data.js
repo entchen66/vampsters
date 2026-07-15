@@ -1443,8 +1443,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 3/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Neben Coffee & Coffins im Biergarten zwischen den Tischen mit den Festivals-Leckereien.",
+            "en": "Next to Coffee & Coffins in the patio, between the tables with festival treats."
         },
         "note": {
             "de": "Kann nur während des Winterwake-Festivals eingesammelt werden.",
@@ -1600,8 +1600,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 6/6 in Cave of Echoes",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Direkt rechts beim Betreten der Mondhöhle. Wird erst im späteren Verlauf der Story freigeschaltet.",
+            "en": "Directly to the right upon entering the Moon Cavern. Unlocks later in the story."
         }
     },
     {
