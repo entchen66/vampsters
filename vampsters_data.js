@@ -683,7 +683,7 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 21/53 in Town",
         "oldId": "vamp_town_08",
         "desc": {
-            "de": "Im Café 'Coffee & Coffins', hinter dem Ladenbereich.",
+            "de": "Im tote Torten Café, hinter dem Ladenbereich.",
             "en": "Inside Coffee & Coffins, behind the shop area."
         }
     },
@@ -700,8 +700,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 46/53 in Town",
         "oldId": "vamp_town_07",
         "desc": {
-            "de": "Im Café 'Coffee & Coffins'.",
-            "en": "Inside Coffee & Coffins"
+            "de": "Im tote Torten Café direkt rechts beim Eingang.",
+            "en": "Inside Coffee & Coffins, right at the entrance."
         }
     },
     {
@@ -717,7 +717,7 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 8/53 in Town",
         "oldId": "vamp_town_09",
         "desc": {
-            "de": "Im Café 'Coffee & Coffins', oben im Wohnbereich.",
+            "de": "Im tote Torten Café, oben im Wohnbereich.",
             "en": "Inside Coffee & Coffins, upstairs in the living area."
         }
     },
@@ -1278,7 +1278,7 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 40/53 in Town",
         "oldId": "vamp_town_10",
         "desc": {
-            "de": "Hinter dem 'Coffee & Coffins', beim Zitronenbaum.",
+            "de": "Hinter tote Torten, beim Zitronenbaum.",
             "en": "Behind Coffee & Coffins, by the lemon tree."
         }
     },
@@ -1350,8 +1350,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 2/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Rechts der zerbrochenen Lampe, zwischen dem Baum und der Weinbar.",
+            "en": "To the right of The Broken Lamp, between the tree and the wine bar."
         },
         "note": {
             "de": "Kann nur während des Evernight-Festivals eingesammelt werden.",
@@ -1443,7 +1443,7 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 3/53 in Town",
         "oldId": null,
         "desc": {
-            "de": "Neben Coffee & Coffins im Biergarten zwischen den Tischen mit den Festivals-Leckereien.",
+            "de": "Neben tote Torten im Biergarten zwischen den Tischen mit den Festivals-Leckereien.",
             "en": "Next to Coffee & Coffins in the patio, between the tables with festival treats."
         },
         "note": {
@@ -1549,8 +1549,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 1/3 in Twilight Catacombs",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "In den Höhlen, eher im hinteren Bereich am Eingang zur Lunabucht.",
+            "en": "In the caves, towards the back by the Luna Bay entrance."
         }
     },
     {
@@ -1566,8 +1566,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 2/3 in Twilight Catacombs",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Im Höhleneingang von der Katakomben aus, auf der rechten Seite in der Ecke.",
+            "en": "In the caves entrance from the catacombs, on the right side in the corner."
         }
     },
     {
@@ -1583,8 +1583,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 3/3 in Twilight Catacombs",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "In den Höhlen, ganz rechts in der Nähe des Eingangs der zerbrochenen Lampe.",
+            "en": "In the caves, to the far right near The Broken Lamp entrance."
         }
     },
     {
