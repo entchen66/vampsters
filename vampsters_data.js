@@ -751,8 +751,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 38/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Befindet sich im Haus Dracula, nachdem deine Familie in die Stadt einzieht.",
+            "en": "Is located in Dracula's house, after your family moves to the town."
         }
     },
     {
@@ -1329,8 +1329,8 @@ const VAMPSTERS_DATA = [
         "almanacTextEN": "Vampster 35/53 in Town",
         "oldId": null,
         "desc": {
-            "de": null,
-            "en": null
+            "de": "Während des Evernight-Festivals findest du diesen kleinen Vamp links neben tote Torten hinter dem Fass mit dem Kürbis drauf.",
+            "en": "During the Evernight festival, you can find this little vamp to the left of Coffee & Coffins, behind the barrel with the pumpkin on it."
         },
         "note": {
             "de": "Kann nur während des Evernight-Festivals eingesammelt werden.",
